@@ -212,7 +212,6 @@ export default function Appointment() {
                       className="input-field"
                       value={form.email}
                       onChange={(e) => updateField('email', e.target.value)}
-                      required
                     />
                   </div>
 

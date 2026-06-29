@@ -54,7 +54,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
+            <h4 className="text-sm font-bold !text-white uppercase tracking-wider mb-4">
               {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-2.5">
@@ -80,7 +80,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
+            <h4 className="text-sm font-bold !text-white uppercase tracking-wider mb-4">
               {t('footer.contactInfo')}
             </h4>
             <ul className="space-y-3">
@@ -113,7 +113,7 @@ export default function Footer() {
 
           {/* Clinic Hours */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
+            <h4 className="text-sm font-bold !text-white uppercase tracking-wider mb-4">
               {t('footer.clinicHours')}
             </h4>
             <div className="space-y-2.5">

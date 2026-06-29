@@ -41,7 +41,7 @@ class AppointmentRequest(BaseModel):
     age: int
     gender: str
     phone: str
-    email: str
+    email: Optional[str] = None
     preferred_date: str
     preferred_time: str
     reason: str
@@ -85,13 +85,18 @@ async def create_appointment(appointment: AppointmentRequest, db: Session = Depe
     raw = f"{appointment.name}{appointment.phone}{time_module.time()}"
     appointment_id = "APT-" + hashlib.md5(raw.encode()).hexdigest()[:8].upper()
 
-    # Check if patient exists, otherwise create
-    patient = db.query(models.Patient).filter(models.Patient.phone == appointment.phone).first()
+    # Check if patient exists by phone AND name, otherwise create
+    name_parts = appointment.name.split(" ", 1)
+    first_name = name_parts[0]
+    last_name = name_parts[1] if len(name_parts) > 1 else ""
+
+    patient = db.query(models.Patient).filter(
+        models.Patient.phone == appointment.phone,
+        models.Patient.first_name == first_name,
+        models.Patient.last_name == last_name
+    ).first()
+
     if not patient:
-        name_parts = appointment.name.split(" ", 1)
-        first_name = name_parts[0]
-        last_name = name_parts[1] if len(name_parts) > 1 else ""
-        
         patient = models.Patient(
             first_name=first_name,
             last_name=last_name,
