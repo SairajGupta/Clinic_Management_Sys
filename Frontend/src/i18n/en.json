@@ -137,7 +137,7 @@
     "title": "Book an Appointment",
     "subtitle": "Schedule your visit with Dr. Kajal Patil",
     "name": "Full Name",
-    "age": "Age",
+    "dob": "Date of Birth (DD/MM/YYYY)",
     "gender": "Gender",
     "genderSelect": "Select Gender",
     "male": "Male",

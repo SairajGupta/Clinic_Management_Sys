@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { MessageCircle } from 'lucide-react';
 
 export default function WhatsAppWidget() {
   const { t } = useTranslation();

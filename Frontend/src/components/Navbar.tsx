@@ -8,7 +8,6 @@ import {
   Globe,
   ChevronDown,
   Heart,
-  Leaf,
 } from 'lucide-react';
 
 const navLinks = [

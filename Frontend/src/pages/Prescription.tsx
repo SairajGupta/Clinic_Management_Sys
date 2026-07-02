@@ -11,7 +11,6 @@ import {
   Pill,
   Clock,
   User,
-  Stethoscope,
   RefreshCw,
 } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';

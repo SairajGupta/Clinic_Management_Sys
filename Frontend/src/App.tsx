@@ -19,6 +19,10 @@ import FAQ from './pages/FAQ';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Prescription from './pages/Prescription';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -33,8 +37,9 @@ function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
-        <ScrollToTop />
-        <div className="flex flex-col min-h-screen">
+        <AuthProvider>
+          <ScrollToTop />
+          <div className="flex flex-col min-h-screen">
           <Navbar />
           <div className="flex-1">
             <Routes>
@@ -47,6 +52,22 @@ function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/prescription" element={<Prescription />} />
+              
+              {/* Auth Routes */}
+              <Route path="/login" element={<Login />} />
+              
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute allowedRoles={['DOCTOR', 'ADMIN']} />}>
+                <Route path="/doctor" element={<Dashboard title="Doctor Dashboard" />} />
+              </Route>
+              
+              <Route element={<ProtectedRoute allowedRoles={['RECEPTIONIST', 'ADMIN']} />}>
+                <Route path="/receptionist" element={<Dashboard title="Receptionist Dashboard" />} />
+              </Route>
+              
+              <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+                <Route path="/admin" element={<Dashboard title="Admin Dashboard" />} />
+              </Route>
             </Routes>
           </div>
           <Footer />
@@ -56,6 +77,7 @@ function App() {
           <ChatbotWidget />
           <StickyCTA />
         </div>
+        </AuthProvider>
       </BrowserRouter>
     </HelmetProvider>
   );

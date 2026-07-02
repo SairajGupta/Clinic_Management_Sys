@@ -9,7 +9,6 @@ import {
   Sparkles,
   Shield,
   Users,
-  BookOpen,
   Lightbulb,
   HandHeart,
 } from 'lucide-react';

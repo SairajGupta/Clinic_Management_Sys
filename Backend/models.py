@@ -1,7 +1,24 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, Time, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, Boolean, Date, Time, DateTime, ForeignKey, Text, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
+import enum
+
+class UserRole(str, enum.Enum):
+    ADMIN = "ADMIN"
+    RECEPTIONIST = "RECEPTIONIST"
+    DOCTOR = "DOCTOR"
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    role = Column(String, default=UserRole.RECEPTIONIST.value)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 
 class Patient(Base):
     __tablename__ = "patients"
@@ -10,7 +27,7 @@ class Patient(Base):
     first_name = Column(String, index=True)
     last_name = Column(String)
     phone = Column(String, index=True)
-    age = Column(Integer)
+    dob = Column(Date)
     gender = Column(String)
     email = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
