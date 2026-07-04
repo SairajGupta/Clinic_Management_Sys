@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Date, Time, DateTime, ForeignKey, Text, Enum as SQLEnum
+from sqlalchemy import Column, Integer, String, Boolean, Date, Time, DateTime, ForeignKey, Text, Float, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -59,6 +59,7 @@ class QueueToken(Base):
     appointment_id = Column(Integer, ForeignKey("appointments.id"))
     token_number = Column(Integer)
     token_date = Column(Date)
+    sort_order = Column(Float, default=0.0)
     assigned_at = Column(DateTime, default=datetime.utcnow)
     check_in_time = Column(DateTime, nullable=True)
     penalty_delay = Column(Integer, default=0)

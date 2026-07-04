@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -39,15 +40,18 @@ export default function Prescription() {
   const [result, setResult] = useState<PrescriptionData | null>(null);
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
-    if (!prescriptionId.trim()) return;
+  const [searchParams] = useSearchParams();
+
+  const handleSearch = async (searchId: string = prescriptionId) => {
+    if (!searchId.trim()) return;
     setLoading(true);
     setError('');
     setResult(null);
+    setPrescriptionId(searchId);
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/prescriptions/${prescriptionId.trim()}`
+        `http://localhost:8000/api/prescriptions/${searchId.trim()}`
       );
       const data = await response.json();
 
@@ -78,6 +82,13 @@ export default function Prescription() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const idFromUrl = searchParams.get('id');
+    if (idFromUrl) {
+      handleSearch(idFromUrl);
+    }
+  }, []);
 
   const handlePrint = () => {
     window.print();
@@ -118,11 +129,11 @@ export default function Prescription() {
                     placeholder={t('prescription.inputPlaceholder')}
                     value={prescriptionId}
                     onChange={(e) => setPrescriptionId(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch(prescriptionId)}
                   />
                 </div>
                 <button
-                  onClick={handleSearch}
+                  onClick={() => handleSearch(prescriptionId)}
                   className="btn-primary !px-8"
                   disabled={loading}
                 >

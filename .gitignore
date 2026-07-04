@@ -38,3 +38,10 @@ build/
 .vscode/
 .idea/
 .md
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated files
+*.pdf

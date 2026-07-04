@@ -20,7 +20,10 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Prescription from './pages/Prescription';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+
+import DoctorDashboard from './pages/DoctorDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import ReceptionistDashboard from './pages/ReceptionistDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 
@@ -58,15 +61,15 @@ function App() {
               
               {/* Protected Routes */}
               <Route element={<ProtectedRoute allowedRoles={['DOCTOR', 'ADMIN']} />}>
-                <Route path="/doctor" element={<Dashboard title="Doctor Dashboard" />} />
+                <Route path="/doctor" element={<DoctorDashboard />} />
               </Route>
               
               <Route element={<ProtectedRoute allowedRoles={['RECEPTIONIST', 'ADMIN']} />}>
-                <Route path="/receptionist" element={<Dashboard title="Receptionist Dashboard" />} />
+                <Route path="/receptionist" element={<ReceptionistDashboard />} />
               </Route>
               
               <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
-                <Route path="/admin" element={<Dashboard title="Admin Dashboard" />} />
+                <Route path="/admin" element={<AdminDashboard />} />
               </Route>
             </Routes>
           </div>

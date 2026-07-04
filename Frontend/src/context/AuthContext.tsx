@@ -12,15 +12,15 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('access_token'));
-  const [role, setRole] = useState<string | null>(localStorage.getItem('user_role'));
+  const [token, setToken] = useState<string | null>(sessionStorage.getItem('access_token'));
+  const [role, setRole] = useState<string | null>(sessionStorage.getItem('user_role'));
   const navigate = useNavigate();
 
   const login = (newToken: string, newRole: string) => {
     setToken(newToken);
     setRole(newRole);
-    localStorage.setItem('access_token', newToken);
-    localStorage.setItem('user_role', newRole);
+    sessionStorage.setItem('access_token', newToken);
+    sessionStorage.setItem('user_role', newRole);
     
     // Redirect based on role
     if (newRole === 'DOCTOR') navigate('/doctor');
@@ -31,8 +31,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setToken(null);
     setRole(null);
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_role');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('user_role');
     navigate('/login');
   };
 

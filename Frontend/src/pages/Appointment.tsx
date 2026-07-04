@@ -1,5 +1,6 @@
-import { useState, type FormEvent } from 'react';
+import React, { useState, useEffect, useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
   Calendar,
@@ -55,9 +56,81 @@ const calculateAgeFromDDMMYYYY = (dobString: string) => {
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
+const DateInput = ({ value, onChange, placeholder, required = false, min, max }: { value: string, onChange: (val: string) => void, placeholder: string, required?: boolean, min?: string, max?: string }) => {
+  const [displayValue, setDisplayValue] = useState(formatDateToDDMMYYYY(value));
+  const dateRef = useRef<HTMLInputElement>(null);
+  
+  useEffect(() => {
+    setDisplayValue(formatDateToDDMMYYYY(value));
+  }, [value]);
+
+  const handleContainerClick = () => {
+    if (dateRef.current && typeof dateRef.current.showPicker === 'function') {
+      try {
+        dateRef.current.showPicker();
+      } catch (e) {
+        // ignore
+      }
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value.replace(/\D/g, ''); 
+    if (input.length > 8) input = input.slice(0, 8);
+    
+    let formatted = input;
+    if (input.length > 4) {
+      formatted = `${input.slice(0, 2)}/${input.slice(2, 4)}/${input.slice(4)}`;
+    } else if (input.length > 2) {
+      formatted = `${input.slice(0, 2)}/${input.slice(2)}`;
+    }
+    
+    setDisplayValue(formatted);
+    
+    if (input.length === 8) {
+      onChange(parseDDMMYYYYtoYYYYMMDD(formatted));
+    } else {
+      onChange('');
+    }
+  };
+
+  const handleDatePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const yyyymmdd = e.target.value;
+    if (yyyymmdd) {
+      onChange(yyyymmdd);
+      setDisplayValue(formatDateToDDMMYYYY(yyyymmdd));
+    }
+  };
+
+  return (
+    <div className="relative" onClick={handleContainerClick}>
+      <input 
+        type="text" 
+        className="input-field font-mono pr-10" 
+        placeholder={placeholder} 
+        value={displayValue} 
+        onChange={handleChange} 
+        required={required}
+      />
+      <input 
+        type="date"
+        ref={dateRef}
+        className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 cursor-pointer w-8 h-8 z-10"
+        value={value}
+        onChange={handleDatePick}
+        min={min}
+        max={max}
+      />
+      <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-sage pointer-events-none" />
+    </div>
+  );
+};
+
 export default function Appointment() {
   const { t } = useTranslation();
   const { ref, isVisible } = useScrollReveal(0.05);
+  const location = useLocation();
+  const navigate = useNavigate();
   
   const [step, setStep] = useState(1);
   const [patientType, setPatientType] = useState<'new' | 'existing' | null>(null);
@@ -71,6 +144,7 @@ export default function Appointment() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [appointmentId, setAppointmentId] = useState('');
+  const [tokenNumber, setTokenNumber] = useState<number | null>(null);
 
   const [form, setForm] = useState<FormData>({
     name: '',
@@ -176,6 +250,9 @@ export default function Appointment() {
       if (response.ok) {
         const data = await response.json();
         setAppointmentId(data.appointment_id);
+        if (data.token_number) {
+          setTokenNumber(data.token_number);
+        }
         setSubmitted(true);
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -191,6 +268,7 @@ export default function Appointment() {
   const resetFlow = () => {
     setSubmitted(false);
     setAppointmentId('');
+    setTokenNumber(null);
     setError('');
     setStep(1);
     setPatientType(null);
@@ -204,15 +282,44 @@ export default function Appointment() {
     });
   };
 
-  const timeSlots = [
-    t('appointment.morning1'),
-    t('appointment.morning2'),
-    t('appointment.morning3'),
-    t('appointment.morning4'),
-    t('appointment.evening1'),
-    t('appointment.evening2'),
-    t('appointment.evening3'),
-  ];
+  const getAvailableTimeSlots = () => {
+    const allSlots = [
+      t('appointment.morning1'),
+      t('appointment.morning2'),
+      t('appointment.morning3'),
+      t('appointment.morning4'),
+      t('appointment.evening1'),
+      t('appointment.evening2'),
+      t('appointment.evening3'),
+    ];
+
+    if (!form.preferred_date) return allSlots;
+
+    const today = new Date().toISOString().split('T')[0];
+    if (form.preferred_date !== today) return allSlots;
+
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    return allSlots.filter(slot => {
+      const startTimeStr = slot.split(" - ")[0];
+      const timeParts = startTimeStr.split(" ");
+      if (timeParts.length !== 2) return true;
+
+      const [time, modifier] = timeParts;
+      let [hours, minutes] = time.split(":").map(Number);
+
+      if (modifier === "PM" && hours !== 12) hours += 12;
+      if (modifier === "AM" && hours === 12) hours = 0;
+
+      if (hours < currentHours) return false;
+      
+      return true;
+    });
+  };
+
+  const timeSlots = getAvailableTimeSlots();
 
   return (
     <>
@@ -244,14 +351,37 @@ export default function Appointment() {
                   {t('appointment.successTitle')}
                 </h2>
                 <p className="text-warm-gray mb-2">{t('appointment.successMessage')}</p>
-                <p className="text-sm font-mono bg-mint/30 text-sage-dark px-4 py-2 rounded-xl inline-block mb-8">
+                <p className="text-sm font-mono bg-mint/30 text-sage-dark px-4 py-2 rounded-xl inline-block mb-4">
                   ID: {appointmentId}
                 </p>
-                <div>
+                {tokenNumber && (
+                  <div className="mb-8 p-4 bg-teal-50 border border-teal-200 rounded-2xl animate-fade-in shadow-sm">
+                    <p className="text-teal-800 font-medium mb-1">Your Queue Token</p>
+                    <p className="text-5xl font-extrabold text-teal-600">#{tokenNumber}</p>
+                    <p className="text-sm text-teal-700 mt-2">Please present this number at the front desk</p>
+                  </div>
+                )}
+                {!tokenNumber && (
+                  <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-2xl animate-fade-in shadow-sm">
+                    <p className="text-amber-800 font-bold mb-2">Queue Token Update</p>
+                    <p className="text-sm text-amber-700 mb-2">Your token will be automatically generated <strong>30 minutes prior</strong> to your appointment.</p>
+                    <p className="text-xs text-amber-600">For generating a token instantly, please walk-in and consult the receptionist.</p>
+                  </div>
+                )}
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <button onClick={resetFlow} className="btn-primary">
                     <RefreshCw className="w-4 h-4" />
                     {t('appointment.bookAnother')}
                   </button>
+                  {location.state?.fromDashboard && (
+                    <button 
+                      onClick={() => navigate('/receptionist')} 
+                      className="px-6 py-3 rounded-full font-bold text-sage-dark border-2 border-mint bg-white hover:bg-mint-light transition-all flex items-center justify-center gap-2"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Back to Dashboard
+                    </button>
+                  )}
                 </div>
               </div>
             ) : (
@@ -282,6 +412,16 @@ export default function Appointment() {
                         <UserPlus className="w-12 h-12 text-gold mb-4 group-hover:scale-110 transition-transform" />
                         <span className="text-lg font-bold text-dark">New Patient</span>
                         <span className="text-sm text-warm-gray mt-2 text-center">This is my first time</span>
+                      </button>
+                    </div>
+                    
+                    <div className="mt-10 flex justify-center border-t border-gray-100 pt-6">
+                      <button 
+                        onClick={() => navigate(location.state?.fromDashboard ? '/receptionist' : '/')}
+                        className="flex items-center text-sage font-medium hover:text-sage-dark transition-colors"
+                      >
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        {location.state?.fromDashboard ? 'Back to Dashboard' : 'Back to Home'}
                       </button>
                     </div>
                   </div>
@@ -428,14 +568,13 @@ export default function Appointment() {
 
                         {/* DOB */}
                         <div>
-                          <label className="block text-sm font-semibold text-dark mb-1.5">{t('appointment.dob', 'Date of Birth (DD/MM/YYYY)')}</label>
-                          <input
-                            type="date"
-                            className="input-field"
+                          <label className="block text-sm font-semibold text-dark mb-1.5">{t('appointment.dob', 'Date of Birth')}</label>
+                          <DateInput
                             value={form.dob}
-                            onChange={(e) => updateField('dob', e.target.value)}
+                            onChange={(val) => updateField('dob', val)}
+                            placeholder="DD/MM/YYYY"
+                            required={true}
                             max={new Date().toISOString().split('T')[0]}
-                            required
                           />
                         </div>
 
@@ -489,13 +628,12 @@ export default function Appointment() {
                             <Calendar className="w-4 h-4 inline mr-1.5 text-sage" />
                             {t('appointment.date')}
                           </label>
-                          <input
-                            type="date"
-                            className="input-field"
+                          <DateInput
                             value={form.preferred_date}
-                            onChange={(e) => updateField('preferred_date', e.target.value)}
+                            onChange={(val) => updateField('preferred_date', val)}
+                            placeholder="DD/MM/YYYY"
+                            required={true}
                             min={new Date().toISOString().split('T')[0]}
-                            required
                           />
                         </div>
 
