@@ -48,9 +48,15 @@ function Hero() {
                 <span className="leading-tight font-semibold">{t('location.sunday')}</span>
               </div>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mint/60 text-sage-dark text-sm font-semibold mb-6 animate-fade-in-down">
-              <Heart className="w-4 h-4" fill="currentColor" />
-              {t('hero.clinicName')}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6 animate-fade-in-down">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mint/60 text-sage-dark text-sm font-semibold shadow-sm">
+                <Heart className="w-4 h-4" fill="currentColor" />
+                {t('hero.clinicName')}
+              </div>
+              <a href="tel:+919876543210" className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-white text-sage-dark hover:bg-sage-dark hover:text-white border border-sage/30 text-base font-extrabold shadow-md hover:shadow-lg transition-all duration-300 group">
+                <Phone className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                +91 98765 43210
+              </a>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark leading-[1.15] mb-6 animate-fade-in-up">

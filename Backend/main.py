@@ -6,8 +6,13 @@ from datetime import date, time, datetime
 import json
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 import os
 
 import models
@@ -17,12 +22,29 @@ from database import engine, get_db
 # Create database tables based on models
 models.Base.metadata.create_all(bind=engine)
 
+limiter = Limiter(key_func=get_remote_address)
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        return response
+
 
 app = FastAPI(
     title="Dr. Kajal Patil - Healthcare API",
     description="Backend API for Dr. Kajal Patil's healthcare website",
     version="1.0.0"
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
 # CORS middleware for frontend dev server
 frontend_urls = os.getenv("FRONTEND_URLS", "http://localhost:5173,http://localhost:3000")
@@ -82,73 +104,164 @@ class PrescriptionRequest(BaseModel):
 # --- Endpoints ---
 
 @app.get("/")
-async def root():
-    return {"message": "Dr. Kajal Patil Healthcare API", "status": "running"}
+def root():
+    try:
+        return {"message": "Dr. Kajal Patil Healthcare API", "status": "running"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/token")
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == form_data.username).first()
-    
-    if not user or not auth.verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(
-            status_code=401,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+@limiter.limit("5/minute")
+def login_for_access_token(request: Request, form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    try:
+        user = db.query(models.User).filter(models.User.username == form_data.username).first()
         
-    access_token = auth.create_access_token(data={"sub": user.username, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role}
+        if not user or not auth.verify_password(form_data.password, user.hashed_password):
+            raise HTTPException(
+                status_code=401,
+                detail="Incorrect username or password",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+            
+        access_token = auth.create_access_token(data={"sub": user.username, "role": user.role, "name": user.name})
+        return {"access_token": access_token, "token_type": "bearer", "role": user.role, "name": user.name}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 class UserCreateRequest(BaseModel):
     username: str
+    name: str
     password: str
     role: str
 
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    name: str
+    role: str
+    is_active: bool
+
+class AdminUserUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    password: Optional[str] = None
+
 @app.post("/api/admin/users")
+@limiter.limit("20/minute")
 def create_staff_user(
-    request: UserCreateRequest, 
+    request: Request,
+    user_data: UserCreateRequest, 
     db: Session = Depends(get_db), 
     current_user: models.User = Depends(auth.require_admin)
 ):
     """
     Admin-only endpoint to create new staff accounts (Doctors, Receptionists).
     """
-    # Check if user already exists
-    existing_user = db.query(models.User).filter(models.User.username == request.username).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Username already exists")
+    try:
+        # Check if user already exists
+        existing_user = db.query(models.User).filter(models.User.username == user_data.username).first()
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Username already exists")
+            
+        # Validate role
+        if user_data.role not in [models.UserRole.ADMIN.value, models.UserRole.RECEPTIONIST.value, models.UserRole.DOCTOR.value]:
+            raise HTTPException(status_code=400, detail="Invalid role specified")
+            
+        hashed_password = auth.get_password_hash(user_data.password)
+        new_user = models.User(username=user_data.username, name=user_data.name, hashed_password=hashed_password, role=user_data.role)
         
-    # Validate role
-    if request.role not in [models.UserRole.ADMIN.value, models.UserRole.RECEPTIONIST.value, models.UserRole.DOCTOR.value]:
-        raise HTTPException(status_code=400, detail="Invalid role specified")
+        db.add(new_user)
+        db.commit()
         
-    hashed_password = auth.get_password_hash(request.password)
-    new_user = models.User(username=request.username, hashed_password=hashed_password, role=request.role)
-    
-    db.add(new_user)
-    db.commit()
-    
-    return {"success": True, "message": f"User {request.username} created successfully with role {request.role}"}
+        return {"success": True, "message": f"User {user_data.username} created successfully with role {user_data.role}"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/setup-admin")
-def setup_admin(db: Session = Depends(get_db)):
-    user_count = db.query(models.User).count()
-    if user_count > 0:
-        raise HTTPException(status_code=400, detail="Admin already exists")
-    hashed_password = auth.get_password_hash("admin123")
-    admin_user = models.User(username="admin", hashed_password=hashed_password, role=models.UserRole.ADMIN.value)
-    db.add(admin_user)
-    db.commit()
-    return {"message": "Admin user created with username 'admin' and password 'admin123'"}
+@app.get("/api/admin/users", response_model=List[UserResponse])
+def get_all_users(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.require_admin)
+):
+    """
+    Admin-only endpoint to list all users.
+    """
+    try:
+        users = db.query(models.User).all()
+        return users
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/api/admin/users/{user_id}")
+def update_user_by_admin(
+    user_id: int,
+    request: AdminUserUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.require_admin)
+):
+    """
+    Admin-only endpoint to modify a user's name or password.
+    Self-modification is prevented.
+    """
+    try:
+        if user_id == current_user.id:
+            raise HTTPException(status_code=400, detail="Admins cannot modify their own details from this interface.")
+            
+        user = db.query(models.User).filter(models.User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+            
+        if request.name is not None:
+            user.name = request.name
+            
+        if request.password is not None and request.password.strip():
+            user.hashed_password = auth.get_password_hash(request.password)
+            
+        db.commit()
+        return {"success": True, "message": f"User {user.username} updated successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/api/staff/me")
 def read_users_me(current_user: models.User = Depends(auth.get_current_user)):
-    return {"username": current_user.username, "role": current_user.role}
+    try:
+        return {"username": current_user.username, "role": current_user.role}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
+
+class PasswordUpdateRequest(BaseModel):
+    new_password: str
+
+@app.put("/api/users/me/password")
+def update_password(
+    request: PasswordUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    """
+    Endpoint for users to update their own password.
+    """
+    try:
+        hashed_password = auth.get_password_hash(request.new_password)
+        current_user.hashed_password = hashed_password
+        db.commit()
+        return {"success": True, "message": "Password updated successfully"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/appointments", response_model=AppointmentResponse)
-def create_appointment(appointment: AppointmentRequest, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def create_appointment(request: Request, appointment: AppointmentRequest, db: Session = Depends(get_db)):
     """
     Receive and process appointment booking requests.
     Saves the appointment and patient details to the database.
@@ -421,8 +534,11 @@ def create_prescription(
         raise HTTPException(status_code=500, detail=f"Failed to create prescription: {str(e)}")
 
 @app.get("/api/health")
-async def health_check():
-    return {"status": "healthy"}
+def health_check():
+    try:
+        return {"status": "healthy"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/receptionist/lookup")
 def receptionist_patient_lookup(

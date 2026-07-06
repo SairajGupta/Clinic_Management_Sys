@@ -14,6 +14,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
+    name = Column(String, default="")
     hashed_password = Column(String)
     role = Column(String, default=UserRole.RECEPTIONIST.value)
     is_active = Column(Boolean, default=True)

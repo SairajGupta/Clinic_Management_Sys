@@ -32,7 +32,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.access_token, data.role);
+        login(data.access_token, data.role, data.name);
       } else {
         setError(data.detail || 'Login failed. Please try again.');
       }
@@ -75,7 +75,7 @@ const Login = () => {
                   name="username"
                   type="text"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm"
                   placeholder="Username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -88,7 +88,7 @@ const Login = () => {
                   name="password"
                   type="password"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -100,7 +100,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </button>

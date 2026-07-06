@@ -36,7 +36,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -56,17 +56,17 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         raise HTTPException(status_code=400, detail="Inactive user")
     return user
 
-async def require_admin(current_user: User = Depends(get_current_user)):
+def require_admin(current_user: User = Depends(get_current_user)):
     if current_user.role != UserRole.ADMIN.value:
         raise HTTPException(status_code=403, detail="Not authorized. Admin role required.")
     return current_user
 
-async def require_receptionist_or_doctor(current_user: User = Depends(get_current_user)):
+def require_receptionist_or_doctor(current_user: User = Depends(get_current_user)):
     if current_user.role not in [UserRole.ADMIN.value, UserRole.RECEPTIONIST.value, UserRole.DOCTOR.value]:
         raise HTTPException(status_code=403, detail="Not authorized.")
     return current_user
 
-async def require_doctor(current_user: User = Depends(get_current_user)):
+def require_doctor(current_user: User = Depends(get_current_user)):
     if current_user.role not in [UserRole.ADMIN.value, UserRole.DOCTOR.value]:
         raise HTTPException(status_code=403, detail="Not authorized. Doctor role required.")
     return current_user

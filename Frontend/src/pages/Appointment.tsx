@@ -355,10 +355,10 @@ export default function Appointment() {
                   ID: {appointmentId}
                 </p>
                 {tokenNumber && (
-                  <div className="mb-8 p-4 bg-teal-50 border border-teal-200 rounded-2xl animate-fade-in shadow-sm">
-                    <p className="text-teal-800 font-medium mb-1">Your Queue Token</p>
-                    <p className="text-5xl font-extrabold text-teal-600">#{tokenNumber}</p>
-                    <p className="text-sm text-teal-700 mt-2">Please present this number at the front desk</p>
+                  <div className="mb-8 p-4 bg-sky-50 border border-sky-200 rounded-2xl animate-fade-in shadow-sm">
+                    <p className="text-sky-800 font-medium mb-1">Your Queue Token</p>
+                    <p className="text-5xl font-extrabold text-sky-600">#{tokenNumber}</p>
+                    <p className="text-sm text-sky-700 mt-2">Please present this number at the front desk</p>
                   </div>
                 )}
                 {!tokenNumber && (

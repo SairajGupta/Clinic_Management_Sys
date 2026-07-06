@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import UpdatePasswordModal from '../components/UpdatePasswordModal';
 
 interface QueueItem {
   token_id: number;
@@ -46,7 +47,9 @@ interface PatientData {
 }
 
 const ReceptionistDashboard: React.FC = () => {
-  const { role, token, logout } = useAuth();
+  const { name, role, token, logout } = useAuth();
+  
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const [phoneSearch, setPhoneSearch] = useState('');
   const [searchResults, setSearchResults] = useState<PatientData[] | null>(null);
@@ -60,6 +63,7 @@ const ReceptionistDashboard: React.FC = () => {
   // Queue state
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [queueLoading, setQueueLoading] = useState(false);
+  const [queueError, setQueueError] = useState<string | null>(null);
 
   const displayQueue = React.useMemo(() => {
     const serving = queue.filter(q => q.status === 'SERVING');
@@ -80,6 +84,7 @@ const ReceptionistDashboard: React.FC = () => {
 
   const fetchQueue = async () => {
     setQueueLoading(true);
+    setQueueError(null);
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(`${apiUrl}/api/receptionist/queue`, {
@@ -88,9 +93,12 @@ const ReceptionistDashboard: React.FC = () => {
       const data = await response.json();
       if (response.ok) {
         setQueue(data.queue);
+      } else {
+        setQueueError(data.detail || 'Failed to load queue.');
       }
     } catch (err) {
       console.error('Failed to fetch queue:', err);
+      setQueueError('Network error while fetching queue.');
     } finally {
       setQueueLoading(false);
     }
@@ -269,14 +277,22 @@ const ReceptionistDashboard: React.FC = () => {
           <div className="bg-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 font-outfit">Receptionist Dashboard</h1>
-              <p className="text-gray-600 mt-1">Manage patient lookups and records.</p>
+              <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{name || role}</span></p>
             </div>
-            <button
-              onClick={logout}
-              className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
-            >
-              Logout
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsPasswordModalOpen(true)}
+                className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-full text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm whitespace-nowrap"
+              >
+                Update Password
+              </button>
+              <button
+                onClick={logout}
+                className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
+              >
+                Logout
+              </button>
+            </div>
           </div>
 
           {/* Main Content Area */}
@@ -304,7 +320,7 @@ const ReceptionistDashboard: React.FC = () => {
                         value={phoneSearch}
                         onChange={(e) => setPhoneSearch(e.target.value)}
                         placeholder="e.g. 9876543210"
-                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-teal-500 focus:border-teal-500 sm:text-sm transition-shadow"
+                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-sky-500 focus:border-sky-500 sm:text-sm transition-shadow"
                       />
                     </div>
                   </div>
@@ -312,7 +328,7 @@ const ReceptionistDashboard: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isLoading || !phoneSearch.trim()}
-                    className={`mt-auto w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-md'}`}
+                    className={`mt-auto w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-md'}`}
                   >
                     {isLoading ? 'Searching...' : 'Search Records'}
                   </button>
@@ -326,14 +342,14 @@ const ReceptionistDashboard: React.FC = () => {
               </div>
 
               {/* Book Appointment Card */}
-              <div className="bg-gradient-to-br from-teal-50 to-emerald-50 p-6 rounded-2xl shadow-sm border border-teal-100 flex flex-col">
-                <h3 className="text-xl font-bold text-teal-900 mb-2 font-outfit">Walk-in Booking</h3>
-                <p className="text-teal-700 text-sm mb-6 flex-1">Register new patients or book an appointment for an existing walk-in patient.</p>
+              <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-6 rounded-2xl shadow-sm border border-sky-100 flex flex-col">
+                <h3 className="text-xl font-bold text-sky-900 mb-2 font-outfit">Walk-in Booking</h3>
+                <p className="text-sky-700 text-sm mb-6 flex-1">Register new patients or book an appointment for an existing walk-in patient.</p>
 
                 <Link
                   to="/appointment"
                   state={{ fromDashboard: true }}
-                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all"
+                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                   Book Walk-in
@@ -345,7 +361,7 @@ const ReceptionistDashboard: React.FC = () => {
             <div className="lg:col-span-2 h-full">
               {isLoading && (
                 <div className="h-full min-h-[400px] bg-white rounded-2xl shadow-sm flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600"></div>
                 </div>
               )}
 
@@ -355,7 +371,7 @@ const ReceptionistDashboard: React.FC = () => {
                     <h2 className="text-xl font-bold text-gray-900 font-outfit">Search Results</h2>
                     <button
                       onClick={() => { setSearchResults(null); setPhoneSearch(''); setSelectedPatientId(null); }}
-                      className="px-4 py-2 bg-gray-50 text-gray-700 hover:text-teal-600 hover:bg-teal-50 font-medium rounded-lg shadow-sm border border-gray-200 transition-colors flex items-center"
+                      className="px-4 py-2 bg-gray-50 text-gray-700 hover:text-sky-600 hover:bg-sky-50 font-medium rounded-lg shadow-sm border border-gray-200 transition-colors flex items-center"
                     >
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                       Back to Dashboard
@@ -372,14 +388,14 @@ const ReceptionistDashboard: React.FC = () => {
                           <div
                             key={result.patient.id}
                             onClick={() => setSelectedPatientId(result.patient.id)}
-                            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-teal-400 hover:shadow-md transition-all group"
+                            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-sky-400 hover:shadow-md transition-all group"
                           >
                             <div className="flex items-center gap-4">
-                              <div className="h-12 w-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center text-lg font-bold font-outfit group-hover:bg-teal-100 transition-colors">
+                              <div className="h-12 w-12 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-lg font-bold font-outfit group-hover:bg-sky-100 transition-colors">
                                 {result.patient.first_name[0]}{result.patient.last_name ? result.patient.last_name[0] : ''}
                               </div>
                               <div>
-                                <h3 className="text-lg font-bold text-gray-900 font-outfit group-hover:text-teal-700">{result.patient.first_name} {result.patient.last_name}</h3>
+                                <h3 className="text-lg font-bold text-gray-900 font-outfit group-hover:text-sky-700">{result.patient.first_name} {result.patient.last_name}</h3>
                                 {result.patient.dob && <p className="text-sm text-gray-500">DOB: {result.patient.dob}</p>}
                                 <p className="text-xs text-gray-400 mt-1">{result.appointments.length} Visits</p>
                               </div>
@@ -398,7 +414,7 @@ const ReceptionistDashboard: React.FC = () => {
                         {searchResults.length > 1 && (
                           <button
                             onClick={() => setSelectedPatientId(null)}
-                            className="text-sm text-teal-600 hover:text-teal-800 font-medium flex items-center transition-colors"
+                            className="text-sm text-sky-600 hover:text-sky-800 font-medium flex items-center transition-colors"
                           >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                             Back to list
@@ -410,7 +426,7 @@ const ReceptionistDashboard: React.FC = () => {
                         {/* Patient Info Header */}
                         <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <div className="flex items-center gap-4">
-                            <div className="h-14 w-14 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xl font-bold font-outfit">
+                            <div className="h-14 w-14 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-bold font-outfit">
                               {result.patient.first_name[0]}{result.patient.last_name ? result.patient.last_name[0] : ''}
                             </div>
                             <div>
@@ -428,20 +444,20 @@ const ReceptionistDashboard: React.FC = () => {
                         <div className="px-6 pt-4 border-b border-gray-100 flex gap-6">
                           <button
                             onClick={() => setTab(result.patient.id, 'appointments')}
-                            className={`pb-4 font-medium text-sm transition-colors relative ${activeTabs[result.patient.id] === 'appointments' ? 'text-teal-600' : 'text-gray-500 hover:text-gray-800'}`}
+                            className={`pb-4 font-medium text-sm transition-colors relative ${activeTabs[result.patient.id] === 'appointments' ? 'text-sky-600' : 'text-gray-500 hover:text-gray-800'}`}
                           >
                             Visits / Appointments
                             {activeTabs[result.patient.id] === 'appointments' && (
-                              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-600 rounded-t-full"></span>
+                              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-600 rounded-t-full"></span>
                             )}
                           </button>
                           <button
                             onClick={() => setTab(result.patient.id, 'prescriptions')}
-                            className={`pb-4 font-medium text-sm transition-colors relative ${activeTabs[result.patient.id] === 'prescriptions' ? 'text-teal-600' : 'text-gray-500 hover:text-gray-800'}`}
+                            className={`pb-4 font-medium text-sm transition-colors relative ${activeTabs[result.patient.id] === 'prescriptions' ? 'text-sky-600' : 'text-gray-500 hover:text-gray-800'}`}
                           >
                             Prescriptions
                             {activeTabs[result.patient.id] === 'prescriptions' && (
-                              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-teal-600 rounded-t-full"></span>
+                              <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-600 rounded-t-full"></span>
                             )}
                           </button>
                         </div>
@@ -475,7 +491,7 @@ const ReceptionistDashboard: React.FC = () => {
                                           <td className="px-4 py-3 whitespace-nowrap">
                                             <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${appt.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
                                                 appt.status === 'BOOKED' ? 'bg-blue-100 text-blue-800' :
-                                                  appt.status === 'CHECKED_IN' ? 'bg-teal-100 text-teal-800' :
+                                                  appt.status === 'CHECKED_IN' ? 'bg-sky-100 text-sky-800' :
                                                     'bg-gray-100 text-gray-800'
                                               }`}>
                                               {appt.status}
@@ -486,7 +502,7 @@ const ReceptionistDashboard: React.FC = () => {
                                             {appt.status === 'BOOKED' && appt.date === new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) && (
                                               <button
                                                 onClick={() => handleCheckIn(appt.id)}
-                                                className="text-teal-600 hover:text-teal-900 bg-teal-50 px-3 py-1 rounded-full text-xs font-bold"
+                                                className="text-sky-600 hover:text-sky-900 bg-sky-50 px-3 py-1 rounded-full text-xs font-bold"
                                               >
                                                 Check In
                                               </button>
@@ -509,9 +525,9 @@ const ReceptionistDashboard: React.FC = () => {
                               ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                   {result.prescriptions.map(presc => (
-                                    <div key={presc.id} className="border border-gray-200 rounded-xl p-4 hover:border-teal-300 hover:shadow-md transition-all group">
+                                    <div key={presc.id} className="border border-gray-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition-all group">
                                       <div className="flex justify-between items-start mb-2">
-                                        <span className="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-1 rounded">{presc.date}</span>
+                                        <span className="bg-sky-50 text-sky-700 text-xs font-bold px-2 py-1 rounded">{presc.date}</span>
                                         <span className="text-gray-400 text-xs font-mono">{presc.prescription_id}</span>
                                       </div>
                                       <h4 className="font-bold text-gray-900 mt-2">{presc.doctor}</h4>
@@ -520,7 +536,7 @@ const ReceptionistDashboard: React.FC = () => {
                                       <Link
                                         to={`/prescription?id=${presc.prescription_id}`}
                                         target="_blank"
-                                        className="inline-flex items-center text-sm font-medium text-teal-600 hover:text-teal-800 group-hover:underline"
+                                        className="inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-800 group-hover:underline"
                                       >
                                         View / Print PDF
                                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -544,24 +560,29 @@ const ReceptionistDashboard: React.FC = () => {
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold text-gray-900 font-outfit">Live Queue</h3>
-                    <button onClick={fetchQueue} className="text-teal-600 hover:text-teal-800">
+                    <button onClick={fetchQueue} className="text-sky-600 hover:text-sky-800">
                       <svg className={`w-5 h-5 ${queueLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                     </button>
                   </div>
 
                   <div className="flex-1 overflow-y-auto pr-2 space-y-3">
-                    {queue.length === 0 ? (
+                    {queueError && (
+                      <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 mb-3">
+                        {queueError}
+                      </div>
+                    )}
+                    {queue.length === 0 && !queueError ? (
                       <p className="text-gray-500 text-sm text-center py-4">No tokens assigned for today yet.</p>
                     ) : (
                       displayQueue.map((q, idx) => (
                         <div 
                           key={q.token_id} 
                           onClick={() => handleLookupById(q.patient_id)}
-                          className={`p-4 rounded-xl border cursor-pointer hover:shadow-md hover:border-teal-300 transition-all ${q.status === 'SERVING' ? 'bg-teal-50 border-teal-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
+                          className={`p-4 rounded-xl border cursor-pointer hover:shadow-md hover:border-sky-300 transition-all ${q.status === 'SERVING' ? 'bg-sky-50 border-sky-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
                         >
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
-                              <div className={`flex items-center justify-center w-12 h-12 rounded-lg font-bold text-xl mr-4 ${q.status === 'SERVING' ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                              <div className={`flex items-center justify-center w-12 h-12 rounded-lg font-bold text-xl mr-4 ${q.status === 'SERVING' ? 'bg-sky-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
                                 #{q.token_number}
                               </div>
                               <div>
@@ -575,7 +596,7 @@ const ReceptionistDashboard: React.FC = () => {
                               <div className="flex gap-2">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'SERVING'); }}
-                                  className="px-3 py-1.5 text-sm bg-teal-100 text-teal-700 font-medium rounded-lg hover:bg-teal-200 transition-colors"
+                                  className="px-3 py-1.5 text-sm bg-sky-100 text-sky-700 font-medium rounded-lg hover:bg-sky-200 transition-colors"
                                   title="Mark as Serving"
                                 >
                                   Serve
@@ -614,6 +635,11 @@ const ReceptionistDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      <UpdatePasswordModal 
+        isOpen={isPasswordModalOpen} 
+        onClose={() => setIsPasswordModalOpen(false)} 
+      />
     </>
   );
 };
