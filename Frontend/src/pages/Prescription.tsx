@@ -49,6 +49,28 @@ export default function Prescription() {
     setResult(null);
     setPrescriptionId(searchId);
 
+    // Short-circuit for demo IDs so we don't attempt a network request
+    // This prevents "Local Network Access" permission prompts on mobile devices 
+    // when the backend URL falls back to localhost.
+    if (searchId.trim().toUpperCase() === 'RX-68CFE6' || searchId.trim().toUpperCase() === 'RX-001') {
+      setTimeout(() => {
+        setResult({
+          success: true,
+          prescription_id: 'RX-68CFE6',
+          patient_name: 'Sample Patient',
+          date: '2026-06-15',
+          doctor: 'Dr. Kajal Patil (BHMS)',
+          medications: [
+            { name: 'Arnica Montana 30C', dosage: '3 times daily', duration: '7 days' },
+            { name: 'Bryonia Alba 200C', dosage: 'Twice daily', duration: '5 days' },
+          ],
+          notes: 'Rest well. Follow up after 1 week. Avoid cold foods.',
+        });
+        setLoading(false);
+      }, 600);
+      return;
+    }
+
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(
@@ -62,23 +84,7 @@ export default function Prescription() {
         setError(t('prescription.notFound'));
       }
     } catch {
-      // Fallback mock data for demo
-      if (prescriptionId.trim().toUpperCase() === 'RX-68CFE6' || prescriptionId.trim().toUpperCase() === 'RX-001') {
-        setResult({
-          success: true,
-          prescription_id: 'RX-68CFE6',
-          patient_name: 'Sample Patient',
-          date: '2026-06-15',
-          doctor: 'Dr. Kajal Patil (BHMS)',
-          medications: [
-            { name: 'Arnica Montana 30C', dosage: '3 times daily', duration: '7 days' },
-            { name: 'Bryonia Alba 200C', dosage: 'Twice daily', duration: '5 days' },
-          ],
-          notes: 'Rest well. Follow up after 1 week. Avoid cold foods.',
-        });
-      } else {
-        setError(t('prescription.notFound'));
-      }
+      setError(t('prescription.notFound'));
     } finally {
       setLoading(false);
     }
