@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
 
 interface QueueItem {
@@ -91,10 +91,10 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
   const fetchQueue = async () => {
     if (isDemo) {
       setQueue([
-        { token_id: 1, token_number: 12, sort_order: 1, status: 'SERVING', patient_name: 'Rahul Kumar', appointment_time: '10:00 AM', patient_id: 101, appointment_id: 201 },
-        { token_id: 2, token_number: 13, sort_order: 2, status: 'CHECKED_IN', patient_name: 'Sneha Patel', appointment_time: '10:15 AM', patient_id: 102, appointment_id: 202 },
-        { token_id: 4, token_number: 14, sort_order: 3, status: 'CHECKED_IN', patient_name: 'John Doe', appointment_time: '10:30 AM', patient_id: 104, appointment_id: 204 },
-        { token_id: 3, token_number: 11, sort_order: 0, status: 'COMPLETED', patient_name: 'Amit Shah', appointment_time: '09:45 AM', patient_id: 103, appointment_id: 203, completed_at: new Date().toISOString() },
+        { token_id: 1, token_number: 12, sort_order: 1, status: 'SERVING', patient_name: 'Rahul Kumar', appointment_time: '10:00 AM', patient_id: 101 },
+        { token_id: 2, token_number: 13, sort_order: 2, status: 'CHECKED_IN', patient_name: 'Sneha Patel', appointment_time: '10:15 AM', patient_id: 102 },
+        { token_id: 4, token_number: 14, sort_order: 3, status: 'CHECKED_IN', patient_name: 'John Doe', appointment_time: '10:30 AM', patient_id: 104 },
+        { token_id: 3, token_number: 11, sort_order: 0, status: 'COMPLETED', patient_name: 'Amit Shah', appointment_time: '09:45 AM', patient_id: 103, completed_at: new Date().toISOString() },
       ]);
       setQueueLoading(false);
       return;

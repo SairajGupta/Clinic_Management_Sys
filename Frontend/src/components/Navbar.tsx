@@ -7,7 +7,6 @@ import {
   Calendar,
   Globe,
   ChevronDown,
-  Heart,
 } from 'lucide-react';
 
 const navLinks = [

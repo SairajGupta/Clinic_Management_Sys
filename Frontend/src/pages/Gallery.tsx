@@ -87,7 +87,7 @@ export default function Gallery() {
                   style={{ transitionDelay: `${200 + i * 100}ms` }}
                 >
                   <div className={`relative h-56 bg-gradient-to-br ${item.gradient} flex items-center justify-center overflow-hidden`}>
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img src={item.image} alt={t(item.titleKey)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-dark/0 group-hover:bg-dark/20 transition-colors duration-300 flex items-center justify-center z-10">
                       <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-md" />
                     </div>
@@ -113,7 +113,7 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="h-64 sm:h-[450px] w-full bg-offwhite flex items-center justify-center relative overflow-hidden">
-                <img src={selectedImage.image} alt={selectedImage.title} className="w-full h-full object-cover" />
+                <img src={selectedImage.image} alt={t(selectedImage.titleKey)} className="w-full h-full object-cover" />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-dark">{t(selectedImage.titleKey)}</h3>

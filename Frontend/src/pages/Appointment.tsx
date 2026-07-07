@@ -139,7 +139,6 @@ export default function Appointment() {
   const [phoneQuery, setPhoneQuery] = useState('');
   const [profiles, setProfiles] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
-  const [selectedProfileId, setSelectedProfileId] = useState<number | null>(null);
   const [showNoRecordsPopup, setShowNoRecordsPopup] = useState(false);
 
   const [submitted, setSubmitted] = useState(false);
@@ -221,7 +220,6 @@ export default function Appointment() {
   };
 
   const handleSelectProfile = (profile: any) => {
-    setSelectedProfileId(profile.id);
     setForm((prev) => ({
       ...prev,
       name: `${profile.first_name} ${profile.last_name || ''}`.trim(),
@@ -234,7 +232,6 @@ export default function Appointment() {
   };
 
   const handleAddNewPatient = () => {
-    setSelectedProfileId(null);
     setForm((prev) => ({
       ...prev,
       name: '',
@@ -305,7 +302,6 @@ export default function Appointment() {
     setPatientType(null);
     setPhoneQuery('');
     setProfiles([]);
-    setSelectedProfileId(null);
     setShowNoRecordsPopup(false);
     setForm({
       name: '', dob: '', gender: '', phone: '', email: '',
@@ -331,7 +327,6 @@ export default function Appointment() {
 
     const now = new Date();
     const currentHours = now.getHours();
-    const currentMinutes = now.getMinutes();
 
     return allSlots.filter(slot => {
       const startTimeStr = slot.split(" - ")[0];
@@ -339,7 +334,7 @@ export default function Appointment() {
       if (timeParts.length !== 2) return true;
 
       const [time, modifier] = timeParts;
-      let [hours, minutes] = time.split(":").map(Number);
+      let [hours] = time.split(":").map(Number);
 
       if (modifier === "PM" && hours !== 12) hours += 12;
       if (modifier === "AM" && hours === 12) hours = 0;

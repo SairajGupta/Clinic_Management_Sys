@@ -1,16 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import {
-  Stethoscope,
-  Thermometer,
-  Activity,
-  ShieldCheck,
-  Heart,
-  ClipboardCheck,
-  MessageSquare,
-  CalendarCheck,
-  Syringe,
-  Users,
   ArrowRight,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -40,19 +30,6 @@ const serviceKeys = [
   'followUpVisits',
   'vaccination',
   'familyHealthcare',
-];
-
-const cardColors = [
-  'from-sage/10 to-mint/30',
-  'from-sky/10 to-sky-light/20',
-  'from-beige to-beige-dark/20',
-  'from-mint to-mint-light',
-  'from-sage-light/20 to-mint/20',
-  'from-sky-light/10 to-sky/10',
-  'from-beige/50 to-beige',
-  'from-mint-light to-mint/50',
-  'from-sage/5 to-sage-light/20',
-  'from-sky/5 to-mint/20',
 ];
 
 export default function Services() {
