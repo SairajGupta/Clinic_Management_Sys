@@ -29,9 +29,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sage to-sage-dark flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" fill="white" />
-              </div>
+              <img src="/Home/doctor-logo-49376.png" alt="Doctor Logo" className="w-10 h-10 object-contain" />
               <div>
                 <span className="block text-base font-bold text-white">
                   Dr. Kajal Patil

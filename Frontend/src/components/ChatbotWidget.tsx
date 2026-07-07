@@ -10,7 +10,7 @@ export default function ChatbotWidget() {
     <>
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-[15rem] lg:bottom-44 right-5 z-50 w-[calc(100vw-2.5rem)] sm:w-96 bg-white rounded-2xl shadow-elevated border border-mint/30 overflow-hidden animate-scale-in origin-bottom-right">
+        <div className="fixed bottom-[15rem] lg:bottom-44 right-5 z-50 w-[calc(100vw-2.5rem)] sm:w-96 bg-white rounded-lg shadow-elevated border border-mint/30 overflow-hidden animate-scale-in origin-bottom-right">
           {/* Header */}
           <div className="bg-gradient-to-r from-sage to-sage-dark px-5 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -33,10 +33,10 @@ export default function ChatbotWidget() {
 
           {/* Messages */}
           <div className="h-64 p-4 bg-offwhite overflow-y-auto">
-            <div className="bg-mint/50 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+            <div className="bg-mint/50 rounded-lg rounded-tl-none px-4 py-3 max-w-[85%]">
               <p className="text-sm text-dark">{t('chatbot.welcome')}</p>
             </div>
-            <div className="mt-3 bg-sky/10 rounded-2xl rounded-tl-none px-4 py-3 max-w-[85%]">
+            <div className="mt-3 bg-sky/10 rounded-lg rounded-tl-none px-4 py-3 max-w-[85%]">
               <p className="text-sm text-dark-soft">{t('chatbot.offline')}</p>
             </div>
           </div>

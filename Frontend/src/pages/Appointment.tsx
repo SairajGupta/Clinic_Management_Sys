@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet-async';
 import {
   Calendar,
@@ -131,6 +132,7 @@ export default function Appointment() {
   const { ref, isVisible } = useScrollReveal(0.05);
   const location = useLocation();
   const navigate = useNavigate();
+  const { role } = useAuth();
   
   const [step, setStep] = useState(1);
   const [patientType, setPatientType] = useState<'new' | 'existing' | null>(null);
@@ -169,8 +171,23 @@ export default function Appointment() {
     setSearching(true);
     setError('');
     
+    // DEMO MODE for public users - skip DB lookup
+    if (role !== 'RECEPTIONIST' && role !== 'ADMIN') {
+      setTimeout(() => {
+        setSearching(false);
+        if (patientType === 'existing') {
+          setShowNoRecordsPopup(true);
+        } else {
+          updateField('phone', phoneQuery);
+          setStep(4);
+        }
+      }, 800);
+      return;
+    }
+
     try {
-      const response = await fetch(`http://localhost:8000/api/patients/by-phone?phone=${phoneQuery}`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/patients/by-phone?phone=${phoneQuery}`);
       if (response.ok) {
         const data = await response.json();
         if (data.patients && data.patients.length > 0) {
@@ -234,6 +251,19 @@ export default function Appointment() {
     setLoading(true);
     setError('');
 
+    // DEMO MODE for public users - skip DB save
+    if (role !== 'RECEPTIONIST' && role !== 'ADMIN') {
+      setTimeout(() => {
+        setAppointmentId(`DEMO-${Math.floor(1000 + Math.random() * 9000)}`);
+        // Only assign a token if the appointment is for today
+        const isToday = form.preferred_date === new Date().toISOString().split('T')[0];
+        setTokenNumber(isToday ? Math.floor(1 + Math.random() * 20) : null);
+        setSubmitted(true);
+        setLoading(false);
+      }, 1500);
+      return;
+    }
+
     try {
       const payload = { 
         ...form, 
@@ -241,7 +271,8 @@ export default function Appointment() {
         preferred_date: formatDateToDDMMYYYY(form.preferred_date)
       };
 
-      const response = await fetch('http://localhost:8000/api/appointments', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -343,26 +374,30 @@ export default function Appointment() {
 
             {submitted ? (
               /* Success State */
-              <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-card border border-mint/20 text-center animate-scale-in">
+              <div className="bg-white rounded-xl p-8 sm:p-12 shadow-card border border-mint/20 text-center animate-scale-in">
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-sage to-sage-dark mx-auto flex items-center justify-center mb-6 shadow-lg">
                   <CheckCircle className="w-10 h-10 text-white" />
                 </div>
                 <h2 className="text-2xl font-extrabold text-dark mb-3">
-                  {t('appointment.successTitle')}
+                  {role !== 'RECEPTIONIST' && role !== 'ADMIN' ? 'Demo Booking Successful!' : t('appointment.successTitle')}
                 </h2>
-                <p className="text-warm-gray mb-2">{t('appointment.successMessage')}</p>
+                <p className="text-warm-gray mb-2">
+                  {role !== 'RECEPTIONIST' && role !== 'ADMIN' 
+                    ? 'This was a simulated booking for demonstration purposes. No real data was saved.' 
+                    : t('appointment.successMessage')}
+                </p>
                 <p className="text-sm font-mono bg-mint/30 text-sage-dark px-4 py-2 rounded-xl inline-block mb-4">
                   ID: {appointmentId}
                 </p>
                 {tokenNumber && (
-                  <div className="mb-8 p-4 bg-sky-50 border border-sky-200 rounded-2xl animate-fade-in shadow-sm">
+                  <div className="mb-8 p-4 bg-sky-50 border border-sky-200 rounded-lg animate-fade-in shadow-sm">
                     <p className="text-sky-800 font-medium mb-1">Your Queue Token</p>
                     <p className="text-5xl font-extrabold text-sky-600">#{tokenNumber}</p>
                     <p className="text-sm text-sky-700 mt-2">Please present this number at the front desk</p>
                   </div>
                 )}
                 {!tokenNumber && (
-                  <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-2xl animate-fade-in shadow-sm">
+                  <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg animate-fade-in shadow-sm">
                     <p className="text-amber-800 font-bold mb-2">Queue Token Update</p>
                     <p className="text-sm text-amber-700 mb-2">Your token will be automatically generated <strong>30 minutes prior</strong> to your appointment.</p>
                     <p className="text-xs text-amber-600">For generating a token instantly, please walk-in and consult the receptionist.</p>
@@ -386,7 +421,7 @@ export default function Appointment() {
               </div>
             ) : (
               /* Booking Flow */
-              <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-card border border-mint/20">
+              <div className="bg-white rounded-xl p-6 sm:p-10 shadow-card border border-mint/20">
                 {error && (
                   <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 text-sm font-medium">
                     {error}
@@ -399,7 +434,7 @@ export default function Appointment() {
                     <div className="grid sm:grid-cols-2 gap-6">
                       <button 
                         onClick={() => { setPatientType('existing'); setStep(2); }}
-                        className="flex flex-col items-center p-8 rounded-2xl border-2 border-mint-light hover:border-sage bg-mint-light/10 hover:bg-mint/20 transition-all group"
+                        className="flex flex-col items-center p-8 rounded-lg border-2 border-mint-light hover:border-sage bg-mint-light/10 hover:bg-mint/20 transition-all group"
                       >
                         <Users className="w-12 h-12 text-sage mb-4 group-hover:scale-110 transition-transform" />
                         <span className="text-lg font-bold text-dark">Existing Patient</span>
@@ -407,7 +442,7 @@ export default function Appointment() {
                       </button>
                       <button 
                         onClick={() => { setPatientType('new'); setStep(2); }}
-                        className="flex flex-col items-center p-8 rounded-2xl border-2 border-beige hover:border-gold/50 bg-beige/10 hover:bg-beige/30 transition-all group"
+                        className="flex flex-col items-center p-8 rounded-lg border-2 border-beige hover:border-gold/50 bg-beige/10 hover:bg-beige/30 transition-all group"
                       >
                         <UserPlus className="w-12 h-12 text-gold mb-4 group-hover:scale-110 transition-transform" />
                         <span className="text-lg font-bold text-dark">New Patient</span>
@@ -466,7 +501,7 @@ export default function Appointment() {
                     {/* No Records Popup */}
                     {showNoRecordsPopup && (
                       <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark/50 backdrop-blur-sm animate-fade-in p-4">
-                        <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl animate-scale-in text-center border border-mint/20">
+                        <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm w-full shadow-2xl animate-scale-in text-center border border-mint/20">
                           <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500">
                             <Search className="w-8 h-8" />
                           </div>

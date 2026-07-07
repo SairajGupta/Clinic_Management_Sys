@@ -43,8 +43,14 @@ interface PatientHistoryData {
   prescriptions: Prescription[];
 }
 
-const DoctorDashboard: React.FC = () => {
+interface DoctorDashboardProps {
+  isDemo?: boolean;
+}
+
+const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => {
   const { name, role, token, logout } = useAuth();
+  
+  const displayName = isDemo ? 'Demo Doctor' : (name || role);
   
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   
@@ -83,6 +89,15 @@ const DoctorDashboard: React.FC = () => {
   const [prescriptionError, setPrescriptionError] = useState<string | null>(null);
 
   const fetchQueue = async () => {
+    if (isDemo) {
+      setQueue([
+        { token_id: 1, token_number: 12, sort_order: 1, status: 'SERVING', patient_name: 'Rahul Kumar', appointment_time: '10:00 AM', patient_id: 101, appointment_id: 201 },
+        { token_id: 2, token_number: 13, sort_order: 2, status: 'CHECKED_IN', patient_name: 'Sneha Patel', appointment_time: '10:15 AM', patient_id: 102, appointment_id: 202 },
+        { token_id: 3, token_number: 11, sort_order: 0, status: 'COMPLETED', patient_name: 'Amit Shah', appointment_time: '09:45 AM', patient_id: 103, appointment_id: 203, completed_at: new Date().toISOString() },
+      ]);
+      return;
+    }
+    
     setQueueLoading(true);
     setQueueError(null);
     try {
@@ -111,11 +126,11 @@ const DoctorDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (token) fetchQueue();
-  }, [token]);
+    if (token || isDemo) fetchQueue();
+  }, [token, isDemo]);
 
   useEffect(() => {
-    if (selectedPatient && token) {
+    if (selectedPatient && (token || isDemo)) {
       // Reset forms and tabs
       setNotes('');
       setMedications([{ medicine_name: '', dosage: '', duration: '' }]);
@@ -126,6 +141,19 @@ const DoctorDashboard: React.FC = () => {
   }, [selectedPatient, token]);
 
   const fetchExistingPrescription = async (appointmentId: number) => {
+    if (isDemo) {
+      if (selectedPatient?.status === 'COMPLETED') {
+        setNotes('Patient advised to rest for 3 days and drink plenty of fluids.');
+        setMedications([
+          { medicine_name: 'Paracetamol 500mg', dosage: '1-1-1 after food', duration: '3 days' },
+          { medicine_name: 'Cough Syrup', dosage: '2 tsp morning/night', duration: '5 days' }
+        ]);
+      } else {
+        setNotes('');
+        setMedications([{ medicine_name: '', dosage: '', duration: '' }]);
+      }
+      return;
+    }
     setPrescriptionError(null);
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -153,6 +181,17 @@ const DoctorDashboard: React.FC = () => {
   };
 
   const fetchPatientHistory = async (patientId: number) => {
+    if (isDemo) {
+      setPatientHistory({
+        appointments: [
+          { id: 1, appointment_id: 'APT-1001', date: '01/06/2026', time: '10:00 AM', status: 'COMPLETED', reason: 'Fever and cold' }
+        ],
+        prescriptions: [
+          { id: 1, prescription_id: 'RX-5001', date: '01/06/2026', doctor: 'Dr. Kajal Patil', medications_count: 2 }
+        ]
+      });
+      return;
+    }
     setHistoryLoading(true);
     setHistoryError(null);
     try {
@@ -175,6 +214,10 @@ const DoctorDashboard: React.FC = () => {
   };
 
   const handleUpdateStatus = async (tokenId: number, status: string) => {
+    if (isDemo) {
+      setQueue(prev => prev.map(q => q.token_id === tokenId ? { ...q, status, completed_at: status === 'COMPLETED' ? new Date().toISOString() : undefined } : q));
+      return;
+    }
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(`${apiUrl}/api/receptionist/queue/status`, {
@@ -217,6 +260,15 @@ const DoctorDashboard: React.FC = () => {
 
     // Filter out empty rows
     const validMeds = medications.filter(m => m.medicine_name.trim() !== '');
+
+    if (isDemo) {
+      alert(`Demo Mode: Prescription saved!`);
+      await handleUpdateStatus(selectedPatient.token_id, 'COMPLETED');
+      setNotes('');
+      setMedications([{ medicine_name: '', dosage: '', duration: '' }]);
+      setSelectedPatient(null);
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -264,25 +316,31 @@ const DoctorDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Header */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
+          <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center border-4 border-sky-50">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 font-outfit">Doctor Dashboard</h1>
-                <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{name || role}</span></p>
+                <h1 className="text-3xl font-bold text-gray-900 font-outfit">{isDemo ? 'Demo ' : ''}Doctor Dashboard</h1>
+                <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{displayName}</span></p>
               </div>
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => setIsPasswordModalOpen(true)}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else setIsPasswordModalOpen(true);
+                }}
                 className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-xl text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm font-bold whitespace-nowrap"
               >
                 Update Password
               </button>
               <button
-                onClick={logout}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else logout();
+                }}
                 className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-red-600 bg-red-50 hover:bg-red-100 transition-colors shadow-sm font-bold"
               >
                 Logout
@@ -295,7 +353,7 @@ const DoctorDashboard: React.FC = () => {
             
             {/* Left Column: Live Queue */}
             <div className="lg:col-span-1 h-full">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
                 <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                   <h3 className="text-xl font-bold text-gray-900 font-outfit flex items-center">
                     <span className="relative flex h-3 w-3 mr-3">
@@ -384,7 +442,7 @@ const DoctorDashboard: React.FC = () => {
             {/* Right Column: Prescription Panel */}
             <div className="lg:col-span-2">
               {!selectedPatient ? (
-                <div className="h-full min-h-[500px] bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-12 text-center">
+                <div className="h-full min-h-[500px] bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col items-center justify-center p-12 text-center">
                   <div className="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mb-6">
                     <svg className="w-12 h-12 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                   </div>
@@ -394,13 +452,13 @@ const DoctorDashboard: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden flex flex-col h-full">
+                <div className="bg-white rounded-lg shadow-sm border border-sky-100 overflow-hidden flex flex-col h-full">
                   
                   {/* Patient Header */}
                   <div className="bg-gradient-to-r from-sky-600 to-blue-600 p-6 text-white flex justify-between items-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
                     <div className="relative z-10 flex items-center gap-4">
-                      <div className="h-16 w-16 bg-white/20 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center border border-white/30 shadow-sm">
+                      <div className="h-16 w-16 bg-white/20 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center border border-white/30 shadow-sm">
                         <span className="text-xs uppercase tracking-widest font-medium opacity-80">Token</span>
                         <span className="text-2xl font-bold leading-none">{selectedPatient.token_number}</span>
                       </div>

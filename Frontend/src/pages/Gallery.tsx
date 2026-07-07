@@ -7,45 +7,45 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 const galleryItems = [
   {
     id: 1,
-    title: 'Reception Area',
-    category: 'Clinic Interior',
+    titleKey: 'gallery.reception',
+    categoryKey: 'gallery.catClinicInterior',
     gradient: 'from-mint via-mint-light to-sage-light/30',
-    icon: '🏥',
+    image: '/Gallery/Recep.jpeg',
   },
   {
     id: 2,
-    title: 'Consultation Room',
-    category: 'Consultation',
+    titleKey: 'gallery.consultation',
+    categoryKey: 'gallery.catConsultation',
     gradient: 'from-beige via-beige-dark/20 to-mint-light/30',
-    icon: '🩺',
+    image: '/Gallery/croom.jpg',
   },
   {
     id: 3,
-    title: 'Waiting Area',
-    category: 'Clinic Interior',
+    titleKey: 'gallery.waitingArea',
+    categoryKey: 'gallery.catClinicInterior',
     gradient: 'from-sky-light/30 via-mint-light to-offwhite',
-    icon: '🪴',
+    image: '/Gallery/waitArea.jfif',
   },
   {
     id: 4,
-    title: 'Medicine Storage',
-    category: 'Clinic Interior',
+    titleKey: 'gallery.medicineStorage',
+    categoryKey: 'gallery.catClinicInterior',
     gradient: 'from-sage-light/20 via-mint to-mint-light',
-    icon: '💊',
+    image: '/Gallery/MedStore.jfif',
   },
   {
     id: 5,
-    title: 'Health Education Corner',
-    category: 'Wellness',
+    titleKey: 'gallery.healthEducation',
+    categoryKey: 'gallery.catWellness',
     gradient: 'from-beige to-beige-dark/30',
-    icon: '📚',
+    image: '/Gallery/heduc.jpg',
   },
   {
     id: 6,
-    title: 'Clinic Entrance',
-    category: 'Clinic Interior',
+    titleKey: 'gallery.clinicEntrance',
+    categoryKey: 'gallery.catClinicInterior',
     gradient: 'from-mint-light via-sage-light/20 to-sky-light/20',
-    icon: '🌿',
+    image: '/Gallery/clinicenteran.jpg',
   },
 ];
 
@@ -81,22 +81,20 @@ export default function Gallery() {
                 <div
                   key={item.id}
                   onClick={() => setSelectedImage(item)}
-                  className={`group cursor-pointer rounded-2xl overflow-hidden shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
+                  className={`group cursor-pointer rounded-lg overflow-hidden shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                   style={{ transitionDelay: `${200 + i * 100}ms` }}
                 >
-                  <div className={`relative h-56 bg-gradient-to-br ${item.gradient} flex items-center justify-center`}>
-                    <span className="text-6xl opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-300">
-                      {item.icon}
-                    </span>
-                    <div className="absolute inset-0 bg-dark/0 group-hover:bg-dark/10 transition-colors duration-300 flex items-center justify-center">
-                      <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className={`relative h-56 bg-gradient-to-br ${item.gradient} flex items-center justify-center overflow-hidden`}>
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-dark/0 group-hover:bg-dark/20 transition-colors duration-300 flex items-center justify-center z-10">
+                      <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-md" />
                     </div>
                   </div>
                   <div className="bg-white p-4">
-                    <h3 className="text-sm font-bold text-dark">{item.title}</h3>
-                    <p className="text-xs text-warm-gray mt-0.5">{item.category}</p>
+                    <h3 className="text-sm font-bold text-dark">{t(item.titleKey)}</h3>
+                    <p className="text-xs text-warm-gray mt-0.5">{t(item.categoryKey)}</p>
                   </div>
                 </div>
               ))}
@@ -111,15 +109,15 @@ export default function Gallery() {
             onClick={() => setSelectedImage(null)}
           >
             <div
-              className="relative bg-white rounded-3xl overflow-hidden shadow-elevated max-w-2xl w-full"
+              className="relative bg-white rounded-xl overflow-hidden shadow-elevated max-w-2xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className={`h-80 sm:h-96 bg-gradient-to-br ${selectedImage.gradient} flex items-center justify-center`}>
-                <span className="text-8xl opacity-50">{selectedImage.icon}</span>
+              <div className="h-64 sm:h-[450px] w-full bg-offwhite flex items-center justify-center relative overflow-hidden">
+                <img src={selectedImage.image} alt={selectedImage.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-dark">{selectedImage.title}</h3>
-                <p className="text-sm text-warm-gray mt-1">{selectedImage.category}</p>
+                <h3 className="text-xl font-bold text-dark">{t(selectedImage.titleKey)}</h3>
+                <p className="text-sm text-warm-gray mt-1">{t(selectedImage.categoryKey)}</p>
               </div>
               <button
                 onClick={() => setSelectedImage(null)}

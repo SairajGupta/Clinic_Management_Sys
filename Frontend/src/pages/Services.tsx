@@ -16,17 +16,17 @@ import {
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
-const serviceIcons = [
-  Stethoscope,
-  Thermometer,
-  Activity,
-  ShieldCheck,
-  Heart,
-  ClipboardCheck,
-  MessageSquare,
-  CalendarCheck,
-  Syringe,
-  Users,
+const serviceImages = [
+  '/ServicesSec/gencon.jpg',
+  '/ServicesSec/f&i.jpg',
+  '/ServicesSec/ld.jpg',
+  '/ServicesSec/phc.jpg',
+  '/ServicesSec/women-wellness (1).jpg',
+  '/ServicesSec/RoutineHc (1).jpg',
+  '/ServicesSec/hc.jfif',
+  '/ServicesSec/followv.jpg',
+  '/ServicesSec/Vaccination.jpg',
+  '/ServicesSec/famhcare.png',
 ];
 
 const serviceKeys = [
@@ -81,32 +81,34 @@ export default function Services() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {serviceKeys.map((key, i) => {
-                const Icon = serviceIcons[i];
                 return (
                   <div
                     key={key}
-                    className={`bg-white rounded-2xl p-6 shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
+                    className={`bg-white rounded-xl shadow-card hover-lift border border-mint/20 transition-all duration-700 flex flex-col overflow-hidden group ${
                       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                     style={{ transitionDelay: `${200 + i * 80}ms` }}
                   >
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cardColors[i]} flex items-center justify-center mb-5`}>
-                      <Icon className="w-7 h-7 text-sage-dark" />
+                    <div className="w-full h-56 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-sage-dark/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
+                      <img src={serviceImages[i]} alt={t(`services.${key}`)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     </div>
-                    <h3 className="text-base font-bold text-dark mb-2">
-                      {t(`services.${key}`)}
-                    </h3>
-                    <p className="text-sm text-warm-gray leading-relaxed mb-4">
-                      {t(`services.${key}Desc`)}
-                    </p>
-                    <Link
-                      to="/appointment"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-sage-dark hover:text-sage transition-colors"
-                    >
-                      Book Now <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                    <div className="p-8 flex-1 flex flex-col">
+                      <h3 className="text-xl font-bold text-dark mb-3 group-hover:text-sage-dark transition-colors">
+                        {t(`services.${key}`)}
+                      </h3>
+                      <p className="text-sm text-warm-gray leading-relaxed mb-8 flex-1">
+                        {t(`services.${key}Desc`)}
+                      </p>
+                      <Link
+                        to="/appointment"
+                        className="inline-flex items-center justify-center w-full py-3 rounded-xl bg-mint/30 text-sage-dark font-bold hover:bg-mint hover:shadow-md transition-all duration-300 group/btn"
+                      >
+                        {t('nav.bookNow')} <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
                 );
               })}

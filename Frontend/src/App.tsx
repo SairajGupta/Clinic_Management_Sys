@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import WhatsAppWidget from './components/WhatsAppWidget';
 import ChatbotWidget from './components/ChatbotWidget';
 import StickyCTA from './components/StickyCTA';
+import DemoDashboardsWidget from './components/DemoDashboardsWidget';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -59,6 +60,11 @@ function App() {
               {/* Auth Routes */}
               <Route path="/login" element={<Login />} />
               
+              {/* Demo Routes */}
+              <Route path="/demo/doctor" element={<DoctorDashboard isDemo={true} />} />
+              <Route path="/demo/receptionist" element={<ReceptionistDashboard isDemo={true} />} />
+              <Route path="/demo/admin" element={<AdminDashboard isDemo={true} />} />
+              
               {/* Protected Routes */}
               <Route element={<ProtectedRoute allowedRoles={['DOCTOR', 'ADMIN']} />}>
                 <Route path="/doctor" element={<DoctorDashboard />} />
@@ -79,6 +85,7 @@ function App() {
           <WhatsAppWidget />
           <ChatbotWidget />
           <StickyCTA />
+          <DemoDashboardsWidget />
         </div>
         </AuthProvider>
       </BrowserRouter>

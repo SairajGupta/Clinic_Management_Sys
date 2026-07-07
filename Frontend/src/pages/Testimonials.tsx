@@ -42,7 +42,7 @@ export default function Testimonials() {
               {reviews.map((review, i) => (
                 <div
                   key={i}
-                  className={`bg-white rounded-2xl p-6 shadow-soft hover-lift border border-mint/15 relative transition-all duration-700 ${
+                  className={`bg-white rounded-lg p-6 shadow-soft hover-lift border border-mint/15 relative transition-all duration-700 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                   style={{ transitionDelay: `${200 + i * 100}ms` }}

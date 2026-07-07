@@ -54,9 +54,7 @@ export default function Navbar() {
             className="flex items-center gap-2.5 group"
             onClick={() => setMobileOpen(false)}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sage to-sage-dark flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-              <Heart className="w-5 h-5 text-white" fill="white" />
-            </div>
+            <img src="/Home/doctor-logo-49376.png" alt="Doctor Logo" className="w-10 h-10 object-contain" />
             <div className="hidden sm:block">
               <span className="block text-base font-bold font-[family-name:var(--font-heading)] text-dark leading-tight">
                 Dr. Kajal Patil

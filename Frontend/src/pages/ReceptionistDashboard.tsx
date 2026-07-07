@@ -46,8 +46,14 @@ interface PatientData {
   prescriptions: Prescription[];
 }
 
-const ReceptionistDashboard: React.FC = () => {
+interface ReceptionistDashboardProps {
+  isDemo?: boolean;
+}
+
+const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = false }) => {
   const { name, role, token, logout } = useAuth();
+  
+  const displayName = isDemo ? 'Demo Receptionist' : (name || role);
   
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
@@ -83,6 +89,17 @@ const ReceptionistDashboard: React.FC = () => {
   }, [queue]);
 
   const fetchQueue = async () => {
+    if (isDemo) {
+      setQueue([
+        { token_id: 1, token_number: 12, sort_order: 1, status: 'SERVING', patient_name: 'Rahul Kumar', appointment_time: '10:00 AM', patient_id: 101, appointment_id: 201 },
+        { token_id: 2, token_number: 13, sort_order: 2, status: 'CHECKED_IN', patient_name: 'Sneha Patel', appointment_time: '10:15 AM', patient_id: 102, appointment_id: 202 },
+        { token_id: 4, token_number: 14, sort_order: 3, status: 'CHECKED_IN', patient_name: 'John Doe', appointment_time: '10:30 AM', patient_id: 104, appointment_id: 204 },
+        { token_id: 3, token_number: 11, sort_order: 0, status: 'COMPLETED', patient_name: 'Amit Shah', appointment_time: '09:45 AM', patient_id: 103, appointment_id: 203, completed_at: new Date().toISOString() },
+      ]);
+      setQueueLoading(false);
+      return;
+    }
+    
     setQueueLoading(true);
     setQueueError(null);
     try {
@@ -107,6 +124,20 @@ const ReceptionistDashboard: React.FC = () => {
   const handleLookupById = async (patientId: number) => {
     setIsLoading(true);
     setError('');
+
+    if (isDemo) {
+      setTimeout(() => {
+        setSearchResults([{
+          patient: { id: patientId, first_name: 'Rahul', last_name: 'Kumar', phone: '9876543210', dob: '01/01/1990', gender: 'Male', email: 'rahul@example.com' },
+          appointments: [{ id: 1, appointment_id: 'APT-2001', date: '01/07/2026', time: '10:00 AM', status: 'COMPLETED', reason: 'Fever' }],
+          prescriptions: [{ id: 1, prescription_id: 'RX-7001', date: '01/07/2026', doctor: 'Dr. Kajal Patil', medications_count: 2 }]
+        }]);
+        setActiveTabs({ [patientId]: 'appointments' });
+        setSelectedPatientId(patientId);
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -146,10 +177,15 @@ const ReceptionistDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (token) fetchQueue();
-  }, [token]);
+    if (token || isDemo) fetchQueue();
+  }, [token, isDemo]);
 
   const handleCheckIn = async (appointmentId: number) => {
+    if (isDemo) {
+      alert("Demo Mode: Patient checked in!");
+      fetchQueue();
+      return;
+    }
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(`${apiUrl}/api/receptionist/check-in`, {
@@ -177,6 +213,11 @@ const ReceptionistDashboard: React.FC = () => {
   };
 
   const handleMoveQueue = async (tokenId: number, afterTokenId: number) => {
+    if (isDemo) {
+      alert("Demo Mode: Moved patient in queue.");
+      fetchQueue();
+      return;
+    }
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(`${apiUrl}/api/receptionist/queue/move`, {
@@ -196,6 +237,10 @@ const ReceptionistDashboard: React.FC = () => {
   };
 
   const handleUpdateStatus = async (tokenId: number, status: string) => {
+    if (isDemo) {
+      setQueue(prev => prev.map(q => q.token_id === tokenId ? { ...q, status, completed_at: status === 'COMPLETED' ? new Date().toISOString() : undefined } : q));
+      return;
+    }
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(`${apiUrl}/api/receptionist/queue/status`, {
@@ -220,6 +265,20 @@ const ReceptionistDashboard: React.FC = () => {
 
     setIsLoading(true);
     setError('');
+
+    if (isDemo) {
+      setTimeout(() => {
+        setSearchResults([{
+          patient: { id: 101, first_name: 'Rahul', last_name: 'Kumar', phone: phoneSearch, dob: '01/01/1990', gender: 'Male', email: 'rahul@example.com' },
+          appointments: [{ id: 1, appointment_id: 'APT-2001', date: '01/07/2026', time: '10:00 AM', status: 'COMPLETED', reason: 'Fever' }],
+          prescriptions: [{ id: 1, prescription_id: 'RX-7001', date: '01/07/2026', doctor: 'Dr. Kajal Patil', medications_count: 2 }]
+        }]);
+        setActiveTabs({ 101: 'appointments' });
+        setSelectedPatientId(101);
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -274,20 +333,26 @@ const ReceptionistDashboard: React.FC = () => {
         <div className="max-w-7xl mx-auto space-y-8">
 
           {/* Header */}
-          <div className="bg-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 font-outfit">Receptionist Dashboard</h1>
-              <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{name || role}</span></p>
+              <h1 className="text-3xl font-bold text-gray-900 font-outfit">{isDemo ? 'Demo ' : ''}Receptionist Dashboard</h1>
+              <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{displayName}</span></p>
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => setIsPasswordModalOpen(true)}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else setIsPasswordModalOpen(true);
+                }}
                 className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-full text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm whitespace-nowrap"
               >
                 Update Password
               </button>
               <button
-                onClick={logout}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else logout();
+                }}
                 className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
               >
                 Logout
@@ -302,7 +367,7 @@ const ReceptionistDashboard: React.FC = () => {
             <div className="lg:col-span-1 space-y-6">
 
               {/* Patient Lookup Card */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 font-outfit">Patient Lookup</h2>
 
                 <form onSubmit={handleSearch} className="flex-1 flex flex-col">
@@ -342,25 +407,31 @@ const ReceptionistDashboard: React.FC = () => {
               </div>
 
               {/* Book Appointment Card */}
-              <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-6 rounded-2xl shadow-sm border border-sky-100 flex flex-col">
+              <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-6 rounded-lg shadow-sm border border-sky-100 flex flex-col">
                 <h3 className="text-xl font-bold text-sky-900 mb-2 font-outfit">Walk-in Booking</h3>
                 <p className="text-sky-700 text-sm mb-6 flex-1">Register new patients or book an appointment for an existing walk-in patient.</p>
 
-                <Link
-                  to="/appointment"
-                  state={{ fromDashboard: true }}
-                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all"
+                <button
+                  onClick={(e) => {
+                    if (isDemo) {
+                      e.preventDefault();
+                      alert('Demo Mode: Walk-in booking is simulated in search results.');
+                    } else {
+                      window.location.href = "/appointment"; // Fallback if Link not used easily
+                    }
+                  }}
+                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all cursor-pointer"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                   Book Walk-in
-                </Link>
+                </button>
               </div>
             </div>
 
             {/* Right Column: Results OR Token Management */}
             <div className="lg:col-span-2 h-full">
               {isLoading && (
-                <div className="h-full min-h-[400px] bg-white rounded-2xl shadow-sm flex items-center justify-center">
+                <div className="h-full min-h-[400px] bg-white rounded-lg shadow-sm flex items-center justify-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600"></div>
                 </div>
               )}
@@ -388,7 +459,7 @@ const ReceptionistDashboard: React.FC = () => {
                           <div
                             key={result.patient.id}
                             onClick={() => setSelectedPatientId(result.patient.id)}
-                            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-sky-400 hover:shadow-md transition-all group"
+                            className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-sky-400 hover:shadow-md transition-all group"
                           >
                             <div className="flex items-center gap-4">
                               <div className="h-12 w-12 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-lg font-bold font-outfit group-hover:bg-sky-100 transition-colors">
@@ -422,7 +493,7 @@ const ReceptionistDashboard: React.FC = () => {
                         )}
                       </div>
 
-                      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
                         {/* Patient Info Header */}
                         <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <div className="flex items-center gap-4">
@@ -533,14 +604,20 @@ const ReceptionistDashboard: React.FC = () => {
                                       <h4 className="font-bold text-gray-900 mt-2">{presc.doctor}</h4>
                                       <p className="text-sm text-gray-500 mb-4">{presc.medications_count} Medications prescribed</p>
 
-                                      <Link
-                                        to={`/prescription?id=${presc.prescription_id}`}
-                                        target="_blank"
-                                        className="inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-800 group-hover:underline"
+                                      <button
+                                        onClick={(e) => {
+                                          if (isDemo) {
+                                            e.preventDefault();
+                                            alert('Demo Mode: View PDF disabled.');
+                                          } else {
+                                            window.open(`/prescription?id=${presc.prescription_id}`, '_blank');
+                                          }
+                                        }}
+                                        className="inline-flex items-center text-sm font-medium text-sky-600 hover:text-sky-800 group-hover:underline cursor-pointer bg-transparent border-0 p-0"
                                       >
                                         View / Print PDF
                                         <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                                      </Link>
+                                      </button>
                                     </div>
                                   ))}
                                 </div>
@@ -557,7 +634,7 @@ const ReceptionistDashboard: React.FC = () => {
 
               {searchResults === null && !isLoading && (
                 /* Token Management Card */
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold text-gray-900 font-outfit">Live Queue</h3>
                     <button onClick={fetchQueue} className="text-sky-600 hover:text-sky-800">

@@ -25,20 +25,39 @@ function Hero() {
   const { t } = useTranslation();
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-offwhite via-mint-light/30 to-offwhite">
-      {/* Organic Shapes */}
-      <div className="organic-shape organic-shape-1 -top-32 -right-32" />
-      <div className="organic-shape organic-shape-2 top-1/2 -left-24" />
-      <div className="organic-shape organic-shape-3 bottom-20 right-1/4" />
+      {/* Bottom Layer: SVGs and Patterns */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Organic Shapes */}
+        <div className="organic-shape organic-shape-1 -top-32 -right-32" />
+        <div className="organic-shape organic-shape-2 top-1/2 -left-24" />
+        <div className="organic-shape organic-shape-3 bottom-20 right-1/4" />
 
-      {/* Leaf pattern overlay */}
-      <div className="absolute inset-0 leaf-pattern" />
+        {/* Leaf pattern overlay */}
+        <div className="absolute inset-0 leaf-pattern opacity-50" />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 lg:pt-32 lg:pb-32">
+      {/* Middle Layer: Clinic Hero Image with fade effect */}
+      <div 
+        className="absolute inset-0 z-[5] pointer-events-none"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.95) 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.95) 100%)'
+        }}
+      >
+        <img 
+          src="/Home/clinic_hero.jpg" 
+          alt="Clinic" 
+          className="w-full h-full object-cover object-right mix-blend-luminosity opacity-60"
+        />
+      </div>
+
+      {/* Top Layer: Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 lg:pt-32 lg:pb-32 w-full">
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
-            <div className="flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-2xl border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
+            <div className="flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-lg border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
               <div className="flex items-start sm:items-center gap-2">
                 <Clock className="w-4 h-4 text-sage mt-0.5 sm:mt-0 flex-shrink-0" />
                 <span className="leading-tight">{t('location.monSat')}</span>
@@ -107,35 +126,34 @@ function Hero() {
 
               {/* Doctor Image Container */}
               <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-mint to-mint-light overflow-hidden border-4 border-white shadow-elevated">
-                {/* Placeholder Doctor Illustration */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-mint/80 to-sage-light/40">
-                  <Stethoscope className="w-20 h-20 text-sage-dark/30 mb-2" />
-                  <p className="text-sage-dark/50 font-heading text-sm font-semibold">Dr. Kajal Patil</p>
-                  <p className="text-sage-dark/35 text-xs">BHMS</p>
-                </div>
+                <img 
+                  src="/Home/img2.jpg" 
+                  alt="Dr. Kajal Patil" 
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
 
               {/* Floating Cards */}
-              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-card px-4 py-3 animate-float hidden sm:block">
+              <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-card px-4 py-3 animate-float hidden sm:block">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                     <Shield className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-dark">BHMS</p>
-                    <p className="text-[10px] text-warm-gray">Verified</p>
+                    <p className="text-xs font-bold text-dark">{t('trust.bhms')}</p>
+                    <p className="text-[10px] text-warm-gray">{t('trust.verified')}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute -bottom-2 -left-6 bg-white rounded-2xl shadow-card px-4 py-3 animate-float delay-300 hidden sm:block">
+              <div className="absolute -bottom-2 -left-6 bg-white rounded-lg shadow-card px-4 py-3 animate-float delay-300 hidden sm:block">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-sky/20 flex items-center justify-center">
                     <Users className="w-4 h-4 text-sky-dark" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-dark">Patient Care</p>
-                    <p className="text-[10px] text-warm-gray">100% Focus</p>
+                    <p className="text-xs font-bold text-dark">{t('trust.patientCareLabel')}</p>
+                    <p className="text-[10px] text-warm-gray">{t('trust.focus')}</p>
                   </div>
                 </div>
               </div>
@@ -175,7 +193,7 @@ function TrustIndicators() {
         {indicators.map((item, i) => (
           <div
             key={i}
-            className="bg-white rounded-2xl p-5 shadow-card hover-lift text-center"
+            className="bg-white rounded-lg p-5 shadow-card hover-lift text-center"
             style={{ transitionDelay: `${i * 100}ms` }}
           >
             <div className={`w-12 h-12 mx-auto rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-3 shadow-md`}>
@@ -242,12 +260,12 @@ function FeaturesGrid() {
           {features.map((f, i) => (
             <div
               key={i}
-              className={`bg-white rounded-2xl p-6 shadow-soft hover-lift border border-mint/20 transition-all duration-700 ${
+              className={`bg-white rounded-lg p-6 shadow-soft hover-lift border border-mint/20 transition-all duration-700 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${200 + i * 100}ms` }}
             >
-              <div className={`w-14 h-14 rounded-2xl ${f.iconBg} flex items-center justify-center mb-5`}>
+              <div className={`w-14 h-14 rounded-lg ${f.iconBg} flex items-center justify-center mb-5`}>
                 <f.icon className={`w-7 h-7 ${f.accent.split(' ')[1]}`} />
               </div>
               <h3 className="text-base font-bold text-dark mb-2">{t(f.titleKey)}</h3>
@@ -270,12 +288,12 @@ function AboutIntro() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="order-2 lg:order-1 relative">
-            <div className="relative w-full max-w-md mx-auto h-80 sm:h-96 rounded-3xl bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white flex items-center justify-center">
-                <Stethoscope className="w-16 h-16 text-sage-dark/25 mb-2" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <p className="text-sage-dark/40 font-heading text-sm font-semibold">Dr. Kajal Patil</p>
-                  <p className="text-sage-dark/30 text-xs">BHMS</p>
-                </div>
+            <div className="relative w-full max-w-lg mx-auto h-[400px] sm:h-[480px] rounded-xl bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white flex items-center justify-center">
+              <img 
+                src="/Home/img1.jpg" 
+                alt="Dr. Kajal Patil" 
+                className="w-full h-full object-cover object-center"
+              />
             </div>
           </div>
           
@@ -290,7 +308,7 @@ function AboutIntro() {
               {t('about.bio2')}
             </p>
             <Link to="/about" className="btn-secondary">
-              Know More <ArrowRight className="w-4 h-4 ml-1" />
+              {t('about.knowMore')} <ArrowRight className="w-4 h-4 ml-1" />
             </Link>
           </div>
         </div>
@@ -305,10 +323,10 @@ function ServicesIntro() {
   const { ref, isVisible } = useScrollReveal();
   
   const services = [
-    { key: 'generalConsultation', icon: Stethoscope, color: 'from-sage/10 to-mint/30' },
-    { key: 'feverManagement', icon: Activity, color: 'from-sky/10 to-sky-light/20' },
-    { key: 'preventiveHealthcare', icon: Shield, color: 'from-beige to-beige-dark/20' },
-    { key: 'womensWellness', icon: Heart, color: 'from-mint to-mint-light' },
+    { key: 'generalConsultation', image: '/ServicesSec/gencon.jpg', color: 'from-sage/10 to-mint/30' },
+    { key: 'feverManagement', image: '/ServicesSec/f&i.jpg', color: 'from-sky/10 to-sky-light/20' },
+    { key: 'preventiveHealthcare', image: '/ServicesSec/phc.jpg', color: 'from-beige to-beige-dark/20' },
+    { key: 'womensWellness', image: '/ServicesSec/women-wellness (1).jpg', color: 'from-mint to-mint-light' },
   ];
 
   return (
@@ -326,18 +344,21 @@ function ServicesIntro() {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {services.map((svc, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 shadow-soft hover-lift border border-mint/15 text-left transition-all duration-700" style={{ transitionDelay: `${i * 100}ms` }}>
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${svc.color} flex items-center justify-center mb-4`}>
-                  <svc.icon className="w-6 h-6 text-sage-dark" />
+              <div key={i} className="bg-white rounded-xl shadow-card hover-lift border border-mint/20 text-left transition-all duration-700 flex flex-col overflow-hidden group" style={{ transitionDelay: `${i * 100}ms` }}>
+                <div className="w-full h-48 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-sage-dark/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
+                  <img src={svc.image} alt={t(`services.${svc.key}`)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                 </div>
-                <h3 className="text-base font-bold text-dark mb-2">{t(`services.${svc.key}`)}</h3>
-                <p className="text-sm text-warm-gray mb-4">{t(`services.${svc.key}Desc`)}</p>
+                <div className="p-6 sm:p-8 flex-1 flex flex-col">
+                  <h3 className="text-lg font-bold text-dark mb-3 group-hover:text-sage-dark transition-colors">{t(`services.${svc.key}`)}</h3>
+                  <p className="text-sm text-warm-gray leading-relaxed mb-0 flex-1">{t(`services.${svc.key}Desc`)}</p>
+                </div>
               </div>
             ))}
           </div>
           
           <Link to="/services" className="btn-secondary">
-            See All Services <ArrowRight className="w-4 h-4 ml-1" />
+            {t('services.seeAll')} <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
         </div>
       </div>
@@ -370,34 +391,37 @@ function TestimonialsPreview() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          {reviews.map((review, i) => (
-            <div
-              key={i}
-              className={`bg-white rounded-2xl p-6 shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${200 + i * 150}ms` }}
-            >
-              <div className="flex items-center gap-1 mb-4">
-                {Array.from({ length: review.rating }).map((_, j) => (
-                  <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                ))}
-              </div>
-              <p className="text-sm text-dark-soft leading-relaxed mb-5 italic">
-                "{review.text}"
-              </p>
-              <div className="flex items-center gap-3 pt-4 border-t border-mint/20">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sage-light to-mint flex items-center justify-center text-sage-dark font-bold text-sm">
-                  {review.name.charAt(0)}
+        <div className={`relative overflow-hidden w-full group py-4 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {/* Gradient masks for smooth edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#F7FBFA] to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#F7FBFA] to-transparent z-10"></div>
+          
+          <div className="flex gap-6 animate-marquee w-max">
+            {[...reviews, ...reviews, ...reviews, ...reviews].map((review, i) => (
+              <div
+                key={i}
+                className="w-[300px] sm:w-[350px] flex-shrink-0 bg-white rounded-lg p-6 shadow-soft hover-lift border border-mint/15 transition-all duration-300"
+              >
+                <div className="flex items-center gap-1 mb-4">
+                  {Array.from({ length: review.rating }).map((_, j) => (
+                    <Star key={j} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
                 </div>
-                <div>
-                  <p className="text-sm font-bold text-dark">{review.name}</p>
-                  <p className="text-xs text-warm-gray">{review.condition}</p>
+                <p className="text-sm text-dark-soft leading-relaxed mb-5 italic">
+                  "{review.text}"
+                </p>
+                <div className="flex items-center gap-3 pt-4 border-t border-mint/20">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sage-light to-mint flex items-center justify-center text-sage-dark font-bold text-sm">
+                    {review.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-dark">{review.name}</p>
+                    <p className="text-xs text-warm-gray">{review.condition}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         <div className="text-center mt-10">
@@ -439,7 +463,7 @@ function FAQPreview() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className={`bg-white rounded-2xl shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
+              className={`bg-white rounded-lg shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${200 + i * 100}ms` }}
@@ -496,7 +520,7 @@ function LocationPreview() {
 
         <div className={`grid lg:grid-cols-2 gap-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
           {/* Map */}
-          <div className="rounded-2xl overflow-hidden shadow-card border border-mint/20 h-72 lg:h-auto">
+          <div className="rounded-lg overflow-hidden shadow-card border border-mint/20 h-72 lg:h-auto">
             <iframe
               title="Clinic Location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.288!2d72.7929!3d21.1702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDEwJzEyLjciTiA3MsKwNDcnMzQuNCJF!5e0!3m2!1sen!2sin!4v1234567890"
@@ -511,41 +535,41 @@ function LocationPreview() {
 
           {/* Info */}
           <div className="space-y-5">
-            <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
               <div className="w-11 h-11 rounded-xl bg-sage/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-sage-dark" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-dark mb-1">Address</h4>
+                <h4 className="text-sm font-bold text-dark mb-1">{t('location.addressLabel')}</h4>
                 <p className="text-sm text-warm-gray leading-relaxed">{t('location.address')}</p>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
               <div className="w-11 h-11 rounded-xl bg-sky/10 flex items-center justify-center flex-shrink-0">
                 <Phone className="w-5 h-5 text-sky-dark" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-dark mb-1">Phone</h4>
+                <h4 className="text-sm font-bold text-dark mb-1">{t('location.phoneLabel')}</h4>
                 <a href="tel:+919876543210" className="text-sm text-warm-gray hover:text-sage-dark transition-colors">
                   {t('location.phone')}
                 </a>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
               <div className="w-11 h-11 rounded-xl bg-beige flex items-center justify-center flex-shrink-0">
                 <Mail className="w-5 h-5 text-dark-soft" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-dark mb-1">Email</h4>
+                <h4 className="text-sm font-bold text-dark mb-1">{t('location.emailLabel')}</h4>
                 <a href="mailto:dr.kajalpatil@clinic.com" className="text-sm text-warm-gray hover:text-sage-dark transition-colors">
                   {t('location.email')}
                 </a>
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
               <div className="w-11 h-11 rounded-xl bg-mint flex items-center justify-center flex-shrink-0">
                 <Clock className="w-5 h-5 text-sage-dark" />
               </div>

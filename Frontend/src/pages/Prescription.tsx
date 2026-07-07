@@ -50,8 +50,9 @@ export default function Prescription() {
     setPrescriptionId(searchId);
 
     try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
       const response = await fetch(
-        `http://localhost:8000/api/prescriptions/${searchId.trim()}`
+        `${apiUrl}/api/prescriptions/${searchId.trim()}`
       );
       const data = await response.json();
 
@@ -62,10 +63,10 @@ export default function Prescription() {
       }
     } catch {
       // Fallback mock data for demo
-      if (prescriptionId.trim().toUpperCase() === 'RX-001') {
+      if (prescriptionId.trim().toUpperCase() === 'RX-68CFE6' || prescriptionId.trim().toUpperCase() === 'RX-001') {
         setResult({
           success: true,
-          prescription_id: 'RX-001',
+          prescription_id: 'RX-68CFE6',
           patient_name: 'Sample Patient',
           date: '2026-06-15',
           doctor: 'Dr. Kajal Patil (BHMS)',
@@ -117,7 +118,7 @@ export default function Prescription() {
             </div>
 
             {/* Search Box */}
-            <div className={`bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-mint/20 mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
+            <div className={`bg-white rounded-xl p-6 sm:p-8 shadow-card border border-mint/20 mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
               <p className="text-sm text-warm-gray mb-5 text-center">{t('prescription.info')}</p>
 
               <div className="flex flex-col sm:flex-row gap-3">
@@ -126,7 +127,7 @@ export default function Prescription() {
                   <input
                     type="text"
                     className="input-field !pl-12"
-                    placeholder={t('prescription.inputPlaceholder')}
+                    placeholder="Enter Prescription ID (e.g., RX-68CFE6)"
                     value={prescriptionId}
                     onChange={(e) => setPrescriptionId(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSearch(prescriptionId)}
@@ -146,6 +147,18 @@ export default function Prescription() {
                 </button>
               </div>
 
+              <div className="mt-3 text-center">
+                <span className="text-xs text-warm-gray">
+                  Want to see an example? Try searching for: {' '}
+                  <button 
+                    onClick={() => { setPrescriptionId('RX-68CFE6'); handleSearch('RX-68CFE6'); }}
+                    className="text-sky-600 font-semibold hover:underline"
+                  >
+                    RX-68CFE6
+                  </button>
+                </span>
+              </div>
+
               {error && (
                 <div className="mt-4 flex items-center gap-2 text-red-500 bg-red-50 rounded-xl px-4 py-3">
                   <AlertCircle className="w-5 h-5 flex-shrink-0" />
@@ -156,7 +169,7 @@ export default function Prescription() {
 
             {/* Prescription Result */}
             {result && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-mint/20 animate-scale-in print:shadow-none print:border-none print-area">
+              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-card border border-mint/20 animate-scale-in print:shadow-none print:border-none print-area">
                 {/* Header */}
                 <div className="text-center pb-6 border-b border-mint/20 mb-6">
                   <h2 className="text-xl font-extrabold text-dark">{t('hero.clinicName')}</h2>
@@ -231,7 +244,7 @@ export default function Prescription() {
             )}
 
             {/* Help Section */}
-            <div className={`mt-8 bg-sky/5 rounded-2xl p-6 border border-sky/15 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
+            <div className={`mt-8 bg-sky/5 rounded-lg p-6 border border-sky/15 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
               <div className="flex items-start gap-3">
                 <HelpCircle className="w-5 h-5 text-sky-dark flex-shrink-0 mt-0.5" />
                 <div>

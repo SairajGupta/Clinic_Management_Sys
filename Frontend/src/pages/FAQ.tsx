@@ -61,7 +61,7 @@ export default function FAQ() {
               {filteredFaqs.map((faq, i) => (
                 <div
                   key={i}
-                  className={`bg-white rounded-2xl shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
+                  className={`bg-white rounded-lg shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                   style={{ transitionDelay: `${200 + i * 100}ms` }}

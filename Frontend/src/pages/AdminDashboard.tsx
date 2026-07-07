@@ -4,8 +4,14 @@ import { Helmet } from 'react-helmet-async';
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
 import EditUserModal from '../components/EditUserModal';
 
-const AdminDashboard: React.FC = () => {
+interface AdminDashboardProps {
+  isDemo?: boolean;
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
   const { role, name, token, logout } = useAuth();
+  
+  const displayName = isDemo ? 'Demo Admin' : (name || role);
   
   const [username, setUsername] = useState('');
   const [newName, setNewName] = useState('');
@@ -22,9 +28,17 @@ const AdminDashboard: React.FC = () => {
   const [selectedUserForEdit, setSelectedUserForEdit] = useState<any | null>(null);
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
 
-  const currentUserUsername = token ? JSON.parse(atob(token.split('.')[1])).sub : '';
+  const currentUserUsername = isDemo ? 'admin' : (token ? JSON.parse(atob(token.split('.')[1])).sub : '');
 
   const fetchUsers = async () => {
+    if (isDemo) {
+      setUsers([
+        { id: 1, username: 'admin', name: 'Demo Admin', role: 'ADMIN' },
+        { id: 2, username: 'drkajal', name: 'Dr. Kajal Patil', role: 'DOCTOR' },
+        { id: 3, username: 'reception', name: 'Front Desk', role: 'RECEPTIONIST' },
+      ]);
+      return;
+    }
     setIsLoadingUsers(true);
     setUsersError(null);
     try {
@@ -49,10 +63,10 @@ const AdminDashboard: React.FC = () => {
   };
 
   React.useEffect(() => {
-    if (token) {
+    if (token || isDemo) {
       fetchUsers();
     }
-  }, [token]);
+  }, [token, isDemo]);
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +75,17 @@ const AdminDashboard: React.FC = () => {
       return;
     }
     setStatus({ type: '', message: '' });
+
+    if (isDemo) {
+      setStatus({ type: 'success', message: 'Demo Mode: User created successfully!' });
+      setUsername('');
+      setNewName('');
+      setPassword('');
+      setConfirmPassword('');
+      setUserRole('RECEPTIONIST');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -110,18 +135,24 @@ const AdminDashboard: React.FC = () => {
           {/* Header */}
           <div className="bg-white p-8 rounded-lg shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 font-outfit">Admin Dashboard</h1>
-              <p className="text-gray-600 mt-2">Welcome, <span className="font-semibold text-sky-600">{name || role}</span></p>
+              <h1 className="text-3xl font-bold text-gray-900 font-outfit">{isDemo ? 'Demo ' : ''}Admin Dashboard</h1>
+              <p className="text-gray-600 mt-2">Welcome, <span className="font-semibold text-sky-600">{displayName}</span></p>
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => setIsPasswordModalOpen(true)}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else setIsPasswordModalOpen(true);
+                }}
                 className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-md text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
               >
                 Update Password
               </button>
               <button
-                onClick={logout}
+                onClick={() => {
+                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  else logout();
+                }}
                 className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors"
               >
                 Logout
@@ -253,7 +284,14 @@ const AdminDashboard: React.FC = () => {
                           <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                             {user.username !== currentUserUsername ? (
                                <button 
-                                 onClick={() => { setSelectedUserForEdit(user); setIsEditUserModalOpen(true); }}
+                                 onClick={() => {
+                                   if (isDemo) {
+                                     alert('Demo Mode: User editing is disabled.');
+                                   } else {
+                                     setSelectedUserForEdit(user); 
+                                     setIsEditUserModalOpen(true); 
+                                   }
+                                 }}
                                  className="text-sky-600 hover:text-sky-900 transition-colors"
                                >
                                  Edit

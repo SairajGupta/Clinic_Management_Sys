@@ -48,7 +48,7 @@ export default function Contact() {
               <div className={`space-y-5 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
                 <h3 className="text-xl font-bold text-dark mb-6">{t('contact.getInTouch')}</h3>
 
-                <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+                <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
                   <div className="w-11 h-11 rounded-xl bg-sage/10 flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-5 h-5 text-sage-dark" />
                   </div>
@@ -60,7 +60,7 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+                <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
                   <div className="w-11 h-11 rounded-xl bg-sky/10 flex items-center justify-center flex-shrink-0">
                     <Phone className="w-5 h-5 text-sky-dark" />
                   </div>
@@ -72,7 +72,7 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+                <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
                   <div className="w-11 h-11 rounded-xl bg-beige flex items-center justify-center flex-shrink-0">
                     <Mail className="w-5 h-5 text-dark-soft" />
                   </div>
@@ -85,7 +85,7 @@ export default function Contact() {
                 </div>
 
                 {/* Clinic Hours Table */}
-                <div className="bg-white rounded-2xl p-5 shadow-soft border border-mint/15">
+                <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15">
                   <div className="flex items-center gap-2.5 mb-4">
                     <Clock className="w-5 h-5 text-sage-dark" />
                     <h4 className="text-sm font-bold text-dark">{t('contact.clinicHours')}</h4>
@@ -115,7 +115,7 @@ export default function Contact() {
                 </div>
 
                 {/* Emergency Note */}
-                <div className="bg-amber-50 rounded-2xl p-5 border border-amber-200/50 flex items-start gap-3">
+                <div className="bg-amber-50 rounded-lg p-5 border border-amber-200/50 flex items-start gap-3">
                   <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-amber-800 leading-relaxed">
                     {t('contact.emergencyNote')}
@@ -126,7 +126,7 @@ export default function Contact() {
               {/* Right: Contact Form + Map */}
               <div className={`space-y-6 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
                 {/* Contact Form */}
-                <div className="bg-white rounded-2xl p-6 shadow-soft border border-mint/15">
+                <div className="bg-white rounded-lg p-6 shadow-soft border border-mint/15">
                   <h3 className="text-lg font-bold text-dark mb-5">{t('contact.sendMessage')}</h3>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -149,7 +149,7 @@ export default function Contact() {
                 </div>
 
                 {/* Map */}
-                <div className="rounded-2xl overflow-hidden shadow-soft border border-mint/15 h-64">
+                <div className="rounded-lg overflow-hidden shadow-soft border border-mint/15 h-64">
                   <iframe
                     title="Clinic Location"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.288!2d72.7929!3d21.1702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDEwJzEyLjciTiA3MsKwNDcnMzQuNCJF!5e0!3m2!1sen!2sin!4v1234567890"

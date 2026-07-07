@@ -26,7 +26,10 @@
     "patientCare": "Patient-Centered Care",
     "patientCareDesc": "Your health, our priority",
     "sameDay": "Same Day Consultation",
-    "sameDayDesc": "Quick access to medical care"
+    "sameDayDesc": "Quick access to medical care",
+    "verified": "Verified",
+    "patientCareLabel": "Patient Care",
+    "focus": "100% Focus"
   },
   "features": {
     "title": "Why Choose Us",
@@ -69,7 +72,10 @@
     "timings": "Clinic Hours",
     "monSat": "Mon - Sat: 9:00 AM - 1:00 PM, 5:00 PM - 8:00 PM",
     "sunday": "Sunday: 10:00 AM - 1:00 PM",
-    "emergency": "For emergencies, please call directly."
+    "emergency": "For emergencies, please call directly.",
+    "addressLabel": "Address",
+    "phoneLabel": "Phone",
+    "emailLabel": "Email"
   },
   "ctaSection": {
     "title": "Ready to Take the First Step?",
@@ -107,7 +113,8 @@
     "t2Desc": "Extensive hands-on clinical training across multiple healthcare specialties.",
     "t3Year": "2025",
     "t3Title": "Practice Founded",
-    "t3Desc": "Established Healing Harmony Clinic in Surat, dedicated to holistic patient care."
+    "t3Desc": "Established Healing Harmony Clinic in Surat, dedicated to holistic patient care.",
+    "knowMore": "Know More"
   },
   "services": {
     "title": "Our Services",
@@ -131,7 +138,8 @@
     "vaccination": "Vaccination Guidance",
     "vaccinationDesc": "Expert advice on vaccination schedules, immunization, and preventive immunological care.",
     "familyHealthcare": "Family Healthcare",
-    "familyHealthcareDesc": "Complete healthcare solutions for every family member — from infants to elderly."
+    "familyHealthcareDesc": "Complete healthcare solutions for every family member — from infants to elderly.",
+    "seeAll": "See All Services"
   },
   "appointment": {
     "title": "Book an Appointment",
@@ -192,7 +200,16 @@
   },
   "gallery": {
     "title": "Our Clinic",
-    "subtitle": "Take a virtual tour of our warm and welcoming clinic space"
+    "subtitle": "Take a virtual tour of our warm and welcoming clinic space",
+    "reception": "Reception Area",
+    "consultation": "Consultation Room",
+    "waitingArea": "Waiting Area",
+    "medicineStorage": "Medicine Storage",
+    "healthEducation": "Health Education Corner",
+    "clinicEntrance": "Clinic Entrance",
+    "catClinicInterior": "Clinic Interior",
+    "catConsultation": "Consultation",
+    "catWellness": "Wellness"
   },
   "contact": {
     "title": "Contact Us",
