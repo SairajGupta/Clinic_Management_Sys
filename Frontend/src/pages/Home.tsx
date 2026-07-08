@@ -52,12 +52,12 @@ function Hero() {
       </div>
 
       {/* Top Layer: Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-24 lg:pt-32 lg:pb-32 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 pb-16 lg:pt-32 lg:pb-32 w-full">
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
-            <div className="flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-lg border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
+            <div className="hidden sm:flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-lg border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
               <div className="flex items-start sm:items-center gap-2">
                 <Clock className="w-4 h-4 text-sage mt-0.5 sm:mt-0 flex-shrink-0" />
                 <span className="leading-tight">{t('location.monSat')}</span>
@@ -68,7 +68,7 @@ function Hero() {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6 animate-fade-in-down">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mint/60 text-sage-dark text-sm font-semibold shadow-sm">
+              <div className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-mint/60 text-sage-dark text-sm font-semibold shadow-sm">
                 <Heart className="w-4 h-4" fill="currentColor" />
                 {t('hero.clinicName')}
               </div>
@@ -78,7 +78,7 @@ function Hero() {
               </a>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-dark leading-[1.15] mb-6 animate-fade-in-up">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-dark leading-[1.2] mb-4 sm:mb-6 animate-fade-in-up">
               {t('hero.headline').split(' ').map((word, i) => (
                 <span key={i}>
                   {['Compassionate', 'करुणामय', 'કરુણાપૂર્ણ', 'करुणामय'].some(w => word.includes(w)) ||
@@ -91,12 +91,12 @@ function Hero() {
               ))}
             </h1>
 
-            <p className="text-lg text-warm-gray leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in-up delay-200" style={{ opacity: 0 }}>
+            <p className="text-base sm:text-lg text-warm-gray leading-relaxed mb-6 sm:mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in-up delay-200" style={{ opacity: 0 }}>
               {t('hero.subheadline')}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start animate-fade-in-up delay-300" style={{ opacity: 0 }}>
-              <Link to="/appointment" className="btn-primary text-base px-8 py-3.5">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 justify-center lg:justify-start animate-fade-in-up delay-300 w-full px-4 sm:px-0" style={{ opacity: 0 }}>
+              <Link to="/appointment" className="btn-primary w-full sm:w-auto justify-center text-base px-8 py-3.5">
                 <Calendar className="w-5 h-5" />
                 {t('hero.bookAppointment')}
               </Link>
@@ -104,7 +104,7 @@ function Hero() {
                 href="https://wa.me/919876543210"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-whatsapp text-base px-8 py-3.5"
+                className="btn-whatsapp w-full sm:w-auto justify-center text-base px-8 py-3.5"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -125,7 +125,7 @@ function Hero() {
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-mint via-mint-light to-sage-light/30 scale-110 blur-2xl opacity-60" />
 
               {/* Doctor Image Container */}
-              <div className="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-mint to-mint-light overflow-hidden border-4 border-white shadow-elevated">
+              <div className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-mint to-mint-light overflow-hidden border-4 border-white shadow-elevated">
                 <img 
                   src="/Home/img2.jpg" 
                   alt="Dr. Kajal Patil" 
@@ -159,6 +159,27 @@ function Hero() {
               </div>
             </div>
           </div>
+
+          {/* Mobile Timetable */}
+          <div className="sm:hidden flex flex-col w-full max-w-sm mx-auto mt-6 animate-fade-in-up delay-500" style={{ opacity: 0 }}>
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-sage/20 shadow-sm overflow-hidden">
+              <div className="bg-sage/10 px-4 py-3 flex items-center justify-center gap-2 font-bold text-sage-dark border-b border-sage/10">
+                <Clock className="w-5 h-5" />
+                Clinic Timings
+              </div>
+              <div className="p-4 flex flex-col gap-3 text-sm">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-sage-dark shrink-0" />
+                  <span className="text-gray-700 leading-relaxed font-medium">{t('location.monSat')}</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-sky-500 shrink-0" />
+                  <span className="text-sky-700 leading-relaxed font-bold">{t('location.sunday')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 

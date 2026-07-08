@@ -130,7 +130,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
         <title>Admin Dashboard | Dr. Kajal Patil</title>
       </Helmet>
       
-      <div className="min-h-[70vh] bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-[70vh] bg-gray-50 pt-32 pb-12 lg:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="bg-white p-8 rounded-lg shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">

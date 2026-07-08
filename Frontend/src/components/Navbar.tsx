@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="flex items-center justify-between h-16 lg:h-18">
           {/* Logo */}
           <Link
@@ -58,7 +58,7 @@ export default function Navbar() {
               <span className="block text-base font-bold font-[family-name:var(--font-heading)] text-dark leading-tight">
                 Dr. Kajal Patil
               </span>
-              <span className="block text-[11px] font-medium text-sage-dark tracking-wide">
+              <span className="block text-[11px] font-medium text-sage-dark tracking-wide whitespace-nowrap">
                 BHMS • General Physician
               </span>
             </div>
@@ -72,7 +72,7 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                     isActive
                       ? 'text-sage-dark bg-mint/50'
                       : 'text-dark-soft hover:text-sage-dark hover:bg-mint/30'
@@ -90,12 +90,12 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-dark-soft hover:bg-mint/30 transition-all duration-200"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-dark-soft hover:bg-mint/30 transition-all duration-200 whitespace-nowrap flex-nowrap"
                 aria-label="Select language"
               >
-                <Globe className="w-4 h-4" />
-                <span className="hidden sm:inline">{currentLang.flag} {currentLang.label}</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
+                <Globe className="w-4 h-4 shrink-0" />
+                <span className="hidden sm:inline whitespace-nowrap">{currentLang.flag} {currentLang.label}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 shrink-0 ${langOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {langOpen && (
@@ -124,7 +124,7 @@ export default function Navbar() {
             {/* CTA Button (Desktop) */}
             <Link
               to="/appointment"
-              className="hidden lg:inline-flex btn-primary text-sm !py-2 !px-5"
+              className="hidden lg:inline-flex btn-primary text-sm !py-2 !px-5 whitespace-nowrap"
             >
               <Calendar className="w-4 h-4" />
               {t('nav.bookNow')}
@@ -177,7 +177,7 @@ export default function Navbar() {
             <Link
               to="/appointment"
               onClick={() => setMobileOpen(false)}
-              className="btn-primary w-full justify-center text-sm"
+              className="btn-primary w-full justify-center text-sm whitespace-nowrap"
             >
               <Calendar className="w-4 h-4" />
               {t('nav.bookNow')}
