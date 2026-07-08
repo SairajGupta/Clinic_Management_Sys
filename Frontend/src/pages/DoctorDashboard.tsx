@@ -316,7 +316,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
         <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Header */}
-          <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
+          <div className="bg-white p-6 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-100">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 bg-sky-100 text-sky-700 rounded-full flex items-center justify-center border-4 border-sky-50">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -332,7 +332,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                   if (isDemo) alert('Demo Mode: Feature disabled.');
                   else setIsPasswordModalOpen(true);
                 }}
-                className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-xl text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm font-bold whitespace-nowrap"
+                className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-3xl text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm font-bold whitespace-nowrap"
               >
                 Update Password
               </button>
@@ -341,7 +341,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                   if (isDemo) alert('Demo Mode: Feature disabled.');
                   else logout();
                 }}
-                className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-xl text-red-600 bg-red-50 hover:bg-red-100 transition-colors shadow-sm font-bold"
+                className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-3xl text-red-600 bg-red-50 hover:bg-red-100 transition-colors shadow-sm font-bold"
               >
                 Logout
               </button>
@@ -353,7 +353,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
             
             {/* Left Column: Live Queue */}
             <div className="lg:col-span-1 h-full">
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
+              <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
                 <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
                   <h3 className="text-xl font-bold text-gray-900 font-outfit flex items-center">
                     <span className="relative flex h-3 w-3 mr-3">
@@ -362,14 +362,14 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                     </span>
                     Live Queue
                   </h3>
-                  <button onClick={fetchQueue} className="text-sky-600 hover:text-sky-800 p-2 rounded-lg hover:bg-sky-50 transition-colors">
+                  <button onClick={fetchQueue} className="text-sky-600 hover:text-sky-800 p-2 rounded-full hover:bg-sky-50 transition-colors">
                     <svg className={`w-5 h-5 ${queueLoading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                   </button>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto px-1 py-1 pr-3 space-y-3 custom-scrollbar">
                   {queueError && (
-                    <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 mb-3">
+                    <div className="p-3 bg-red-50 text-red-700 rounded-3xl text-sm border border-red-200 mb-3">
                       {queueError}
                     </div>
                   )}
@@ -385,7 +385,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                     displayQueue.map((q) => (
                       <div 
                         key={q.token_id} 
-                        className={`p-4 rounded-xl border transition-all duration-300 cursor-pointer ${
+                        className={`p-4 rounded-3xl border transition-all duration-300 cursor-pointer ${
                           selectedPatient?.token_id === q.token_id 
                             ? 'border-2 border-sky-500 bg-sky-50/50 shadow-md ring-4 ring-sky-500/10 transform scale-[1.02]' 
                             : q.status === 'SERVING' 
@@ -402,7 +402,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                       >
                         <div className="flex justify-between items-center">
                           <div className="flex items-center">
-                            <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-lg font-bold mr-3 ${q.status === 'SERVING' ? 'bg-sky-600 text-white shadow-inner' : 'bg-gray-100 text-gray-700'}`}>
+                            <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-full font-bold mr-3 ${q.status === 'SERVING' ? 'bg-sky-600 text-white shadow-inner' : 'bg-gray-100 text-gray-700'}`}>
                               <span className="text-xs font-normal opacity-80 leading-none">Token</span>
                               <span className="text-lg leading-tight">{q.token_number}</span>
                             </div>
@@ -417,7 +417,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                             {q.status === 'CHECKED_IN' && (
                               <button 
                                 onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'SERVING'); }}
-                                className="px-3 py-2 text-xs bg-sky-600 text-white font-bold rounded-lg hover:bg-sky-700 transition-colors shadow-sm"
+                                className="px-3 py-2 text-xs bg-sky-600 text-white font-bold rounded-3xl hover:bg-sky-700 transition-colors shadow-sm"
                               >
                                 Call Patient
                               </button>
@@ -425,7 +425,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                             
                             {(q.status === 'SERVING' || q.status === 'COMPLETED') && selectedPatient?.token_id !== q.token_id && (
                               <button 
-                                className="px-3 py-2 text-xs bg-white border border-sky-600 text-sky-700 font-bold rounded-lg hover:bg-sky-50 transition-colors"
+                                className="px-3 py-2 text-xs bg-white border border-sky-600 text-sky-700 font-bold rounded-3xl hover:bg-sky-50 transition-colors"
                               >
                                 {q.status === 'COMPLETED' ? 'Edit Rx' : 'Write Rx'} &rarr;
                               </button>
@@ -442,7 +442,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
             {/* Right Column: Prescription Panel */}
             <div className="lg:col-span-2">
               {!selectedPatient ? (
-                <div className="h-full min-h-[500px] bg-white rounded-lg shadow-sm border border-gray-100 flex flex-col items-center justify-center p-12 text-center">
+                <div className="h-full min-h-[500px] bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center p-12 text-center">
                   <div className="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mb-6">
                     <svg className="w-12 h-12 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                   </div>
@@ -452,13 +452,13 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                   </p>
                 </div>
               ) : (
-                <div className="bg-white rounded-lg shadow-sm border border-sky-100 overflow-hidden flex flex-col h-full">
+                <div className="bg-white rounded-3xl shadow-sm border border-sky-100 overflow-hidden flex flex-col h-full">
                   
                   {/* Patient Header */}
                   <div className="bg-gradient-to-r from-sky-600 to-blue-600 p-6 text-white flex justify-between items-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3"></div>
                     <div className="relative z-10 flex items-center gap-4">
-                      <div className="h-16 w-16 bg-white/20 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center border border-white/30 shadow-sm">
+                      <div className="h-16 w-16 bg-white/20 backdrop-blur-sm rounded-full flex flex-col items-center justify-center border border-white/30 shadow-sm">
                         <span className="text-xs uppercase tracking-widest font-medium opacity-80">Token</span>
                         <span className="text-2xl font-bold leading-none">{selectedPatient.token_number}</span>
                       </div>
@@ -472,7 +472,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                     </div>
                     <button 
                       onClick={() => setSelectedPatient(null)}
-                      className="relative z-10 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors border border-white/20"
+                      className="relative z-10 p-2 bg-white/10 hover:bg-white/20 rounded-3xl transition-colors border border-white/20"
                       title="Close"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -501,7 +501,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                     {activeTab === 'prescription' ? (
                       <form onSubmit={handleSubmitPrescription} className="space-y-8">
                       {prescriptionError && (
-                        <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 mb-4">
+                        <div className="p-3 bg-red-50 text-red-700 rounded-3xl text-sm border border-red-200 mb-4">
                           {prescriptionError}
                         </div>
                       )}
@@ -514,7 +514,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                         
                         <div className="space-y-3">
                           {medications.map((med, idx) => (
-                            <div key={idx} className="flex flex-col sm:flex-row gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl relative group transition-colors hover:border-sky-200">
+                            <div key={idx} className="flex flex-col sm:flex-row gap-3 p-4 bg-gray-50 border border-gray-200 rounded-3xl relative group transition-colors hover:border-sky-200">
                               <div className="flex-1">
                                 <label className="block text-xs text-gray-500 mb-1">Medicine Name</label>
                                 <input 
@@ -523,7 +523,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                                   value={med.medicine_name}
                                   onChange={(e) => handleMedicationChange(idx, 'medicine_name', e.target.value)}
                                   placeholder="e.g., Paracetamol 500mg"
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
+                                  className="w-full bg-white border border-gray-300 rounded-3xl px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
                                 />
                               </div>
                               <div className="sm:w-1/4">
@@ -534,7 +534,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                                   value={med.dosage}
                                   onChange={(e) => handleMedicationChange(idx, 'dosage', e.target.value)}
                                   placeholder="e.g., 1-0-1 after food"
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
+                                  className="w-full bg-white border border-gray-300 rounded-3xl px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
                                 />
                               </div>
                               <div className="sm:w-1/4">
@@ -545,7 +545,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                                   value={med.duration}
                                   onChange={(e) => handleMedicationChange(idx, 'duration', e.target.value)}
                                   placeholder="e.g., 5 days"
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
+                                  className="w-full bg-white border border-gray-300 rounded-3xl px-3 py-2 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow"
                                 />
                               </div>
                               {medications.length > 1 && (
@@ -565,7 +565,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                         <button 
                           type="button"
                           onClick={handleAddMedicationRow}
-                          className="mt-4 flex items-center text-sm font-semibold text-sky-600 hover:text-sky-800 transition-colors bg-sky-50 hover:bg-sky-100 px-4 py-2 rounded-lg"
+                          className="mt-4 flex items-center text-sm font-semibold text-sky-600 hover:text-sky-800 transition-colors bg-sky-50 hover:bg-sky-100 px-4 py-2 rounded-3xl"
                         >
                           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                           Add Another Medicine
@@ -580,7 +580,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                           placeholder="General advice, follow-up instructions, dietary restrictions..."
-                          className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow resize-none"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-3xl px-4 py-3 text-sm focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-shadow resize-none"
                         ></textarea>
                       </div>
                       
@@ -589,7 +589,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                         <button
                           type="submit"
                           disabled={submitting || medications[0].medicine_name === ''}
-                          className={`flex items-center px-8 py-3 rounded-xl shadow-md text-white font-bold text-lg transition-all ${
+                          className={`flex items-center px-8 py-3 rounded-3xl shadow-md text-white font-bold text-lg transition-all ${
                             submitting || medications[0].medicine_name === '' 
                               ? 'bg-gray-400 cursor-not-allowed' 
                               : 'bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 hover:shadow-lg transform hover:-translate-y-0.5'
@@ -615,7 +615,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                     ) : (
                       <div className="space-y-8">
                         {historyError && (
-                          <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 mb-4">
+                          <div className="p-4 bg-red-50 text-red-700 rounded-3xl text-sm border border-red-200 mb-4">
                             {historyError}
                           </div>
                         )}
@@ -627,7 +627,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                           ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {patientHistory.prescriptions.map(p => (
-                                <div key={p.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50 hover:border-sky-300 transition-colors">
+                                <div key={p.id} className="border border-gray-200 rounded-3xl p-4 bg-gray-50 hover:border-sky-300 transition-colors">
                                   <div className="flex justify-between items-start mb-2">
                                     <span className="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-0.5 rounded border border-sky-200">
                                       {p.prescription_id}
@@ -649,7 +649,7 @@ const DoctorDashboard: React.FC<DoctorDashboardProps> = ({ isDemo = false }) => 
                           {!patientHistory?.appointments || patientHistory.appointments.length === 0 ? (
                             <p className="text-gray-500 italic">No past appointments found.</p>
                           ) : (
-                            <div className="overflow-hidden rounded-xl border border-gray-200">
+                            <div className="overflow-hidden rounded-3xl border border-gray-200">
                               <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                   <tr>

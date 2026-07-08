@@ -50,7 +50,7 @@ const Login = () => {
       </Helmet>
       
       <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-lg shadow-xl">
+        <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 font-outfit">
               Staff Portal Login
@@ -67,7 +67,7 @@ const Login = () => {
               </div>
             )}
             
-            <div className="rounded-md shadow-sm -space-y-px">
+            <div className="rounded-2xl shadow-sm -space-y-px">
               <div>
                 <label htmlFor="username" className="sr-only">Username</label>
                 <input
@@ -100,7 +100,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-2xl text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </button>

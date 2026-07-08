@@ -81,7 +81,7 @@ export default function Gallery() {
                 <div
                   key={item.id}
                   onClick={() => setSelectedImage(item)}
-                  className={`group cursor-pointer rounded-lg overflow-hidden shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
+                  className={`group cursor-pointer rounded-3xl overflow-hidden shadow-soft hover-lift border border-mint/15 transition-all duration-700 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                   style={{ transitionDelay: `${200 + i * 100}ms` }}
@@ -109,7 +109,7 @@ export default function Gallery() {
             onClick={() => setSelectedImage(null)}
           >
             <div
-              className="relative bg-white rounded-xl overflow-hidden shadow-elevated max-w-2xl w-full"
+              className="relative bg-white rounded-3xl overflow-hidden shadow-elevated max-w-2xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="h-64 sm:h-[450px] w-full bg-offwhite flex items-center justify-center relative overflow-hidden">

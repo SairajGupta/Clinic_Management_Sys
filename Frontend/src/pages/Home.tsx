@@ -57,7 +57,7 @@ function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
-            <div className="hidden sm:flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-lg border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
+            <div className="hidden sm:flex flex-col items-start gap-1.5 text-dark-soft text-sm font-medium mb-5 animate-fade-in-down bg-white/60 px-5 py-3 rounded-3xl border border-sage/20 text-left w-full max-w-[280px] sm:max-w-none shadow-sm">
               <div className="flex items-start sm:items-center gap-2">
                 <Clock className="w-4 h-4 text-sage mt-0.5 sm:mt-0 flex-shrink-0" />
                 <span className="leading-tight">{t('location.monSat')}</span>
@@ -134,7 +134,7 @@ function Hero() {
               </div>
 
               {/* Floating Cards */}
-              <div className="absolute -top-4 -right-4 bg-white rounded-lg shadow-card px-4 py-3 animate-float hidden sm:block">
+              <div className="absolute -top-4 -right-4 bg-white rounded-3xl shadow-card px-4 py-3 animate-float hidden sm:block">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
                     <Shield className="w-4 h-4 text-green-600" />
@@ -146,7 +146,7 @@ function Hero() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-2 -left-6 bg-white rounded-lg shadow-card px-4 py-3 animate-float delay-300 hidden sm:block">
+              <div className="absolute -bottom-2 -left-6 bg-white rounded-3xl shadow-card px-4 py-3 animate-float delay-300 hidden sm:block">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-sky/20 flex items-center justify-center">
                     <Users className="w-4 h-4 text-sky-dark" />
@@ -214,10 +214,10 @@ function TrustIndicators() {
         {indicators.map((item, i) => (
           <div
             key={i}
-            className="bg-white rounded-lg p-5 shadow-card hover-lift text-center"
+            className="bg-white rounded-3xl p-5 shadow-card hover-lift text-center"
             style={{ transitionDelay: `${i * 100}ms` }}
           >
-            <div className={`w-12 h-12 mx-auto rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-3 shadow-md`}>
+            <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-br ${item.color} flex items-center justify-center mb-3 shadow-md`}>
               <item.icon className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-sm font-bold text-dark mb-1">{t(item.titleKey)}</h3>
@@ -281,12 +281,12 @@ function FeaturesGrid() {
           {features.map((f, i) => (
             <div
               key={i}
-              className={`bg-white rounded-lg p-6 shadow-soft hover-lift border border-mint/20 transition-all duration-700 ${
+              className={`bg-white rounded-3xl p-6 shadow-soft hover-lift border border-mint/20 transition-all duration-700 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${200 + i * 100}ms` }}
             >
-              <div className={`w-14 h-14 rounded-lg ${f.iconBg} flex items-center justify-center mb-5`}>
+              <div className={`w-14 h-14 rounded-full ${f.iconBg} flex items-center justify-center mb-5`}>
                 <f.icon className={`w-7 h-7 ${f.accent.split(' ')[1]}`} />
               </div>
               <h3 className="text-base font-bold text-dark mb-2">{t(f.titleKey)}</h3>
@@ -309,7 +309,7 @@ function AboutIntro() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="order-2 lg:order-1 relative">
-            <div className="relative w-full max-w-lg mx-auto h-[400px] sm:h-[480px] rounded-xl bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white flex items-center justify-center">
+            <div className="relative w-full max-w-lg mx-auto h-[400px] sm:h-[480px] rounded-3xl bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white flex items-center justify-center">
               <img 
                 src="/Home/img1.jpg" 
                 alt="Dr. Kajal Patil" 
@@ -365,7 +365,7 @@ function ServicesIntro() {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {services.map((svc, i) => (
-              <div key={i} className="bg-white rounded-xl shadow-card hover-lift border border-mint/20 text-left transition-all duration-700 flex flex-col overflow-hidden group" style={{ transitionDelay: `${i * 100}ms` }}>
+              <div key={i} className="bg-white rounded-3xl shadow-card hover-lift border border-mint/20 text-left transition-all duration-700 flex flex-col overflow-hidden group" style={{ transitionDelay: `${i * 100}ms` }}>
                 <div className="w-full h-48 relative overflow-hidden">
                   <div className="absolute inset-0 bg-sage-dark/10 group-hover:bg-transparent transition-colors duration-500 z-10 pointer-events-none" />
                   <img src={svc.image} alt={t(`services.${svc.key}`)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
@@ -421,7 +421,7 @@ function TestimonialsPreview() {
             {[...reviews, ...reviews, ...reviews, ...reviews].map((review, i) => (
               <div
                 key={i}
-                className="w-[300px] sm:w-[350px] flex-shrink-0 bg-white rounded-lg p-6 shadow-soft hover-lift border border-mint/15 transition-all duration-300"
+                className="w-[300px] sm:w-[350px] flex-shrink-0 bg-white rounded-3xl p-6 shadow-soft hover-lift border border-mint/15 transition-all duration-300"
               >
                 <div className="flex items-center gap-1 mb-4">
                   {Array.from({ length: review.rating }).map((_, j) => (
@@ -484,7 +484,7 @@ function FAQPreview() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className={`bg-white rounded-lg shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
+              className={`bg-white rounded-3xl shadow-soft border border-mint/15 overflow-hidden transition-all duration-700 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
               style={{ transitionDelay: `${200 + i * 100}ms` }}
@@ -541,7 +541,7 @@ function LocationPreview() {
 
         <div className={`grid lg:grid-cols-2 gap-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
           {/* Map */}
-          <div className="rounded-lg overflow-hidden shadow-card border border-mint/20 h-72 lg:h-auto">
+          <div className="rounded-3xl overflow-hidden shadow-card border border-mint/20 h-72 lg:h-auto">
             <iframe
               title="Clinic Location"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.288!2d72.7929!3d21.1702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDEwJzEyLjciTiA3MsKwNDcnMzQuNCJF!5e0!3m2!1sen!2sin!4v1234567890"
@@ -556,8 +556,8 @@ function LocationPreview() {
 
           {/* Info */}
           <div className="space-y-5">
-            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-sage/10 flex items-center justify-center flex-shrink-0">
+            <div className="bg-white rounded-3xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+              <div className="w-11 h-11 rounded-full bg-sage/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-sage-dark" />
               </div>
               <div>
@@ -566,8 +566,8 @@ function LocationPreview() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-sky/10 flex items-center justify-center flex-shrink-0">
+            <div className="bg-white rounded-3xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+              <div className="w-11 h-11 rounded-full bg-sky/10 flex items-center justify-center flex-shrink-0">
                 <Phone className="w-5 h-5 text-sky-dark" />
               </div>
               <div>
@@ -578,8 +578,8 @@ function LocationPreview() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-beige flex items-center justify-center flex-shrink-0">
+            <div className="bg-white rounded-3xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+              <div className="w-11 h-11 rounded-full bg-beige flex items-center justify-center flex-shrink-0">
                 <Mail className="w-5 h-5 text-dark-soft" />
               </div>
               <div>
@@ -590,8 +590,8 @@ function LocationPreview() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
-              <div className="w-11 h-11 rounded-xl bg-mint flex items-center justify-center flex-shrink-0">
+            <div className="bg-white rounded-3xl p-5 shadow-soft border border-mint/15 flex items-start gap-4 hover-lift">
+              <div className="w-11 h-11 rounded-full bg-mint flex items-center justify-center flex-shrink-0">
                 <Clock className="w-5 h-5 text-sage-dark" />
               </div>
               <div>

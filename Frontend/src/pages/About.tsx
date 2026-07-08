@@ -34,10 +34,10 @@ function Timeline() {
         <div className="space-y-10">
           {items.map((item, i) => (
             <div key={i} className="relative flex gap-6 items-start" style={{ transitionDelay: `${i * 150}ms` }}>
-              <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md flex-shrink-0 z-10`}>
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md flex-shrink-0 z-10`}>
                 <item.icon className="w-6 h-6 text-white" />
               </div>
-              <div className="bg-white rounded-lg p-5 shadow-soft border border-mint/15 hover-lift flex-1">
+              <div className="bg-white rounded-3xl p-5 shadow-soft border border-mint/15 hover-lift flex-1">
                 <span className="text-xs font-bold text-sage-dark bg-mint/40 px-2.5 py-1 rounded-full">
                   {item.year}
                 </span>
@@ -72,10 +72,10 @@ function Values() {
         {values.map((v, i) => (
           <div
             key={i}
-            className="bg-white rounded-lg p-6 shadow-soft border border-mint/15 hover-lift"
+            className="bg-white rounded-3xl p-6 shadow-soft border border-mint/15 hover-lift"
             style={{ transitionDelay: `${i * 100}ms` }}
           >
-            <div className={`w-12 h-12 rounded-xl ${v.color.split(' ')[0]} flex items-center justify-center mb-4`}>
+            <div className={`w-12 h-12 rounded-full ${v.color.split(' ')[0]} flex items-center justify-center mb-4`}>
               <v.icon className={`w-6 h-6 ${v.color.split(' ')[1]}`} />
             </div>
             <h4 className="text-base font-bold text-dark mb-2">{v.title}</h4>
@@ -112,7 +112,7 @@ export default function About() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Doctor Image */}
               <div className="flex justify-center">
-                <div className="relative w-72 h-72 sm:w-[400px] sm:h-[400px] lg:w-[480px] lg:h-[480px] rounded-xl bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white">
+                <div className="relative w-72 h-72 sm:w-[400px] sm:h-[400px] lg:w-[480px] lg:h-[480px] rounded-full bg-gradient-to-br from-mint to-sage-light/40 overflow-hidden shadow-elevated border-4 border-white">
                   <img 
                     src="/Home/img1.jpg" 
                     alt="Dr. Kajal Patil" 
@@ -144,8 +144,8 @@ export default function About() {
             ref={missionRef}
             className={`relative z-10 max-w-4xl mx-auto text-center transition-all duration-700 ${missionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
           >
-            <div className="bg-gradient-to-br from-sage/5 to-sky/5 rounded-xl p-8 sm:p-12 border border-mint/20 shadow-soft">
-              <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-sage to-sage-dark mx-auto flex items-center justify-center mb-6 shadow-md">
+            <div className="bg-gradient-to-br from-sage/5 to-sky/5 rounded-3xl p-8 sm:p-12 border border-mint/20 shadow-soft">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sage to-sage-dark mx-auto flex items-center justify-center mb-6 shadow-md">
                 <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-dark mb-4">{t('about.mission')}</h3>

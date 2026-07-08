@@ -79,7 +79,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, user, on
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm animate-fade-in p-4">
-      <div className="bg-white rounded-xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-scale-in border border-sky-100 relative">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl animate-scale-in border border-sky-100 relative">
         <button 
           onClick={resetAndClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -95,13 +95,13 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, user, on
         <p className="text-gray-500 mb-6 text-sm">Update the name or reset the password for this user.</p>
         
         {error && (
-          <div className="p-3 mb-4 rounded-md bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+          <div className="p-3 mb-4 rounded-2xl bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
             {error}
           </div>
         )}
         
         {success && (
-          <div className="p-3 mb-4 rounded-md bg-green-50 border-l-4 border-green-500 text-green-700 text-sm flex items-center">
+          <div className="p-3 mb-4 rounded-2xl bg-green-50 border-l-4 border-green-500 text-green-700 text-sm flex items-center">
             <CheckCircle className="w-4 h-4 mr-2" />
             {success}
           </div>
@@ -115,7 +115,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, user, on
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+              className="block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
               placeholder="Full Name"
             />
           </div>
@@ -126,7 +126,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, user, on
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+              className="block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
               placeholder="Leave blank to keep current password"
             />
           </div>
@@ -135,7 +135,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({ isOpen, onClose, user, on
             <button
               type="submit"
               disabled={isLoading || success !== ''}
-              className={`w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading || success !== '' ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full flex justify-center py-2.5 px-4 border border-transparent rounded-3xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading || success !== '' ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {isLoading ? 'Updating...' : 'Update User'}
             </button>

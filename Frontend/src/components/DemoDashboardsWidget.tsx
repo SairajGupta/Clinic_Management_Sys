@@ -8,14 +8,14 @@ export default function DemoDashboardsWidget() {
   return (
     <div className="fixed top-20 left-0 right-0 z-40 px-4 flex justify-between items-start pointer-events-none sm:top-32 sm:left-auto sm:right-4 sm:px-0 sm:block">
       <div className="sm:hidden pointer-events-auto">
-        <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-xl shadow-sm border border-blue-200 font-bold text-blue-700 text-sm flex items-center h-10">
+        <div className="bg-white/95 backdrop-blur-md px-4 py-2 rounded-3xl shadow-sm border border-blue-200 font-bold text-blue-700 text-sm flex items-center h-10">
           Dr. Kajal Patil
         </div>
       </div>
       <div className="relative pointer-events-auto">
         <button
           onClick={() => setDemoOpen(!demoOpen)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-indigo-700 bg-white/95 backdrop-blur-md hover:bg-indigo-50 shadow-sm border border-indigo-200 transition-all duration-200 h-10"
+          className="flex items-center gap-2 px-4 py-2 rounded-3xl text-sm font-bold text-indigo-700 bg-white/95 backdrop-blur-md hover:bg-indigo-50 shadow-sm border border-indigo-200 transition-all duration-200 h-10"
         >
           <LayoutDashboard className="w-4 h-4" />
           <span className="hidden sm:inline">Demo Dashboards</span>
@@ -26,7 +26,7 @@ export default function DemoDashboardsWidget() {
         {demoOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setDemoOpen(false)} />
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-elevated border border-indigo-100 overflow-hidden z-50 animate-scale-in">
+            <div className="absolute right-0 mt-2 w-56 bg-white rounded-3xl shadow-elevated border border-indigo-100 overflow-hidden z-50 animate-scale-in">
               <Link
                 to="/demo/doctor"
                 onClick={() => setDemoOpen(false)}

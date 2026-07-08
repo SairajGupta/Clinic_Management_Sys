@@ -63,7 +63,7 @@ export default function Services() {
                 return (
                   <div
                     key={key}
-                    className={`bg-white rounded-xl shadow-card hover-lift border border-mint/20 transition-all duration-700 flex flex-col overflow-hidden group ${
+                    className={`bg-white rounded-3xl shadow-card hover-lift border border-mint/20 transition-all duration-700 flex flex-col overflow-hidden group ${
                       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                     }`}
                     style={{ transitionDelay: `${200 + i * 80}ms` }}
@@ -81,7 +81,7 @@ export default function Services() {
                       </p>
                       <Link
                         to="/appointment"
-                        className="inline-flex items-center justify-center w-full py-3 rounded-xl bg-mint/30 text-sage-dark font-bold hover:bg-mint hover:shadow-md transition-all duration-300 group/btn"
+                        className="inline-flex items-center justify-center w-full py-3 rounded-3xl bg-mint/30 text-sage-dark font-bold hover:bg-mint hover:shadow-md transition-all duration-300 group/btn"
                       >
                         {t('nav.bookNow')} <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                       </Link>

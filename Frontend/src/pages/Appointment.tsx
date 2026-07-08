@@ -369,7 +369,7 @@ export default function Appointment() {
 
             {submitted ? (
               /* Success State */
-              <div className="bg-white rounded-xl p-8 sm:p-12 shadow-card border border-mint/20 text-center animate-scale-in">
+              <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-card border border-mint/20 text-center animate-scale-in">
                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-sage to-sage-dark mx-auto flex items-center justify-center mb-6 shadow-lg">
                   <CheckCircle className="w-10 h-10 text-white" />
                 </div>
@@ -381,18 +381,18 @@ export default function Appointment() {
                     ? 'This was a simulated booking for demonstration purposes. No real data was saved.' 
                     : t('appointment.successMessage')}
                 </p>
-                <p className="text-sm font-mono bg-mint/30 text-sage-dark px-4 py-2 rounded-xl inline-block mb-4">
+                <p className="text-sm font-mono bg-mint/30 text-sage-dark px-4 py-2 rounded-3xl inline-block mb-4">
                   ID: {appointmentId}
                 </p>
                 {tokenNumber && (
-                  <div className="mb-8 p-4 bg-sky-50 border border-sky-200 rounded-lg animate-fade-in shadow-sm">
+                  <div className="mb-8 p-4 bg-sky-50 border border-sky-200 rounded-3xl animate-fade-in shadow-sm">
                     <p className="text-sky-800 font-medium mb-1">Your Queue Token</p>
                     <p className="text-5xl font-extrabold text-sky-600">#{tokenNumber}</p>
                     <p className="text-sm text-sky-700 mt-2">Please present this number at the front desk</p>
                   </div>
                 )}
                 {!tokenNumber && (
-                  <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg animate-fade-in shadow-sm">
+                  <div className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-3xl animate-fade-in shadow-sm">
                     <p className="text-amber-800 font-bold mb-2">Queue Token Update</p>
                     <p className="text-sm text-amber-700 mb-2">Your token will be automatically generated <strong>30 minutes prior</strong> to your appointment.</p>
                     <p className="text-xs text-amber-600">For generating a token instantly, please walk-in and consult the receptionist.</p>
@@ -416,9 +416,9 @@ export default function Appointment() {
               </div>
             ) : (
               /* Booking Flow */
-              <div className="bg-white rounded-xl p-6 sm:p-10 shadow-card border border-mint/20">
+              <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-card border border-mint/20">
                 {error && (
-                  <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 text-sm font-medium">
+                  <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-3xl border border-red-100 text-sm font-medium">
                     {error}
                   </div>
                 )}
@@ -429,7 +429,7 @@ export default function Appointment() {
                     <div className="grid sm:grid-cols-2 gap-6">
                       <button 
                         onClick={() => { setPatientType('existing'); setStep(2); }}
-                        className="flex flex-col items-center p-8 rounded-lg border-2 border-mint-light hover:border-sage bg-mint-light/10 hover:bg-mint/20 transition-all group"
+                        className="flex flex-col items-center p-8 rounded-3xl border-2 border-mint-light hover:border-sage bg-mint-light/10 hover:bg-mint/20 transition-all group"
                       >
                         <Users className="w-12 h-12 text-sage mb-4 group-hover:scale-110 transition-transform" />
                         <span className="text-lg font-bold text-dark">Existing Patient</span>
@@ -437,7 +437,7 @@ export default function Appointment() {
                       </button>
                       <button 
                         onClick={() => { setPatientType('new'); setStep(2); }}
-                        className="flex flex-col items-center p-8 rounded-lg border-2 border-beige hover:border-gold/50 bg-beige/10 hover:bg-beige/30 transition-all group"
+                        className="flex flex-col items-center p-8 rounded-3xl border-2 border-beige hover:border-gold/50 bg-beige/10 hover:bg-beige/30 transition-all group"
                       >
                         <UserPlus className="w-12 h-12 text-gold mb-4 group-hover:scale-110 transition-transform" />
                         <span className="text-lg font-bold text-dark">New Patient</span>
@@ -496,7 +496,7 @@ export default function Appointment() {
                     {/* No Records Popup */}
                     {showNoRecordsPopup && (
                       <div className="fixed inset-0 z-50 flex items-center justify-center bg-dark/50 backdrop-blur-sm animate-fade-in p-4">
-                        <div className="bg-white rounded-xl p-6 sm:p-8 max-w-sm w-full shadow-2xl animate-scale-in text-center border border-mint/20">
+                        <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl animate-scale-in text-center border border-mint/20">
                           <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4 text-red-500">
                             <Search className="w-8 h-8" />
                           </div>
@@ -505,7 +505,7 @@ export default function Appointment() {
                           <div className="flex gap-3">
                             <button
                               onClick={() => setShowNoRecordsPopup(false)}
-                              className="flex-1 py-2.5 px-4 rounded-xl border border-gray-200 text-dark font-semibold hover:bg-gray-50 transition-colors"
+                              className="flex-1 py-2.5 px-4 rounded-3xl border border-gray-200 text-dark font-semibold hover:bg-gray-50 transition-colors"
                             >
                               No, try again
                             </button>
@@ -516,7 +516,7 @@ export default function Appointment() {
                                 updateField('phone', phoneQuery);
                                 setStep(4);
                               }}
-                              className="flex-1 py-2.5 px-4 rounded-xl bg-sage text-white font-semibold hover:bg-sage-dark shadow-button hover:shadow-button-hover transition-all"
+                              className="flex-1 py-2.5 px-4 rounded-3xl bg-sage text-white font-semibold hover:bg-sage-dark shadow-button hover:shadow-button-hover transition-all"
                             >
                               Yes, proceed
                             </button>
@@ -540,7 +540,7 @@ export default function Appointment() {
                         <div 
                           key={p.id} 
                           onClick={() => handleSelectProfile(p)}
-                          className="flex items-center justify-between p-4 rounded-xl border border-mint cursor-pointer hover:bg-mint-light/20 hover:shadow-md transition-all"
+                          className="flex items-center justify-between p-4 rounded-3xl border border-mint cursor-pointer hover:bg-mint-light/20 hover:shadow-md transition-all"
                         >
                           <div className="flex items-center">
                             <div className="w-12 h-12 rounded-full bg-mint/40 flex items-center justify-center text-sage font-bold text-lg mr-4">
@@ -562,7 +562,7 @@ export default function Appointment() {
 
                       <div 
                         onClick={handleAddNewPatient}
-                        className="flex items-center justify-center p-4 rounded-xl border-2 border-dashed border-mint cursor-pointer hover:bg-mint-light/20 transition-all text-sage font-semibold"
+                        className="flex items-center justify-center p-4 rounded-3xl border-2 border-dashed border-mint cursor-pointer hover:bg-mint-light/20 transition-all text-sage font-semibold"
                       >
                         <UserPlus className="w-5 h-5 mr-2" />
                         Add New Patient

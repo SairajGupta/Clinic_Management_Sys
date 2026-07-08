@@ -333,7 +333,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
         <div className="max-w-7xl mx-auto space-y-8">
 
           {/* Header */}
-          <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="bg-white p-6 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 font-outfit">{isDemo ? 'Demo ' : ''}Receptionist Dashboard</h1>
               <p className="text-gray-600 mt-1">Welcome, <span className="font-semibold text-sky-600">{displayName}</span></p>
@@ -367,7 +367,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
             <div className="lg:col-span-1 space-y-6">
 
               {/* Patient Lookup Card */}
-              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col">
+              <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 font-outfit">Patient Lookup</h2>
 
                 <form onSubmit={handleSearch} className="flex-1 flex flex-col">
@@ -385,7 +385,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                         value={phoneSearch}
                         onChange={(e) => setPhoneSearch(e.target.value)}
                         placeholder="e.g. 9876543210"
-                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-sky-500 focus:border-sky-500 sm:text-sm transition-shadow"
+                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-3xl focus:ring-sky-500 focus:border-sky-500 sm:text-sm transition-shadow"
                       />
                     </div>
                   </div>
@@ -393,21 +393,21 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                   <button
                     type="submit"
                     disabled={isLoading || !phoneSearch.trim()}
-                    className={`mt-auto w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-md'}`}
+                    className={`mt-auto w-full flex justify-center py-3 px-4 border border-transparent rounded-3xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-md'}`}
                   >
                     {isLoading ? 'Searching...' : 'Search Records'}
                   </button>
                 </form>
 
                 {error && (
-                  <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-xl border border-red-100 text-sm">
+                  <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-3xl border border-red-100 text-sm">
                     {error}
                   </div>
                 )}
               </div>
 
               {/* Book Appointment Card */}
-              <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-6 rounded-lg shadow-sm border border-sky-100 flex flex-col">
+              <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-6 rounded-3xl shadow-sm border border-sky-100 flex flex-col">
                 <h3 className="text-xl font-bold text-sky-900 mb-2 font-outfit">Walk-in Booking</h3>
                 <p className="text-sky-700 text-sm mb-6 flex-1">Register new patients or book an appointment for an existing walk-in patient.</p>
 
@@ -420,7 +420,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                       window.location.href = "/appointment"; // Fallback if Link not used easily
                     }
                   }}
-                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all cursor-pointer"
+                  className="mt-auto w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-3xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all cursor-pointer"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                   Book Walk-in
@@ -431,18 +431,18 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
             {/* Right Column: Results OR Token Management */}
             <div className="lg:col-span-2 h-full">
               {isLoading && (
-                <div className="h-full min-h-[400px] bg-white rounded-lg shadow-sm flex items-center justify-center">
+                <div className="h-full min-h-[400px] bg-white rounded-3xl shadow-sm flex items-center justify-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sky-600"></div>
                 </div>
               )}
 
               {searchResults && searchResults.length > 0 && (
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                  <div className="flex justify-between items-center bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
                     <h2 className="text-xl font-bold text-gray-900 font-outfit">Search Results</h2>
                     <button
                       onClick={() => { setSearchResults(null); setPhoneSearch(''); setSelectedPatientId(null); }}
-                      className="px-4 py-2 bg-gray-50 text-gray-700 hover:text-sky-600 hover:bg-sky-50 font-medium rounded-lg shadow-sm border border-gray-200 transition-colors flex items-center"
+                      className="px-4 py-2 bg-gray-50 text-gray-700 hover:text-sky-600 hover:bg-sky-50 font-medium rounded-3xl shadow-sm border border-gray-200 transition-colors flex items-center"
                     >
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                       Back to Dashboard
@@ -459,7 +459,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                           <div
                             key={result.patient.id}
                             onClick={() => setSelectedPatientId(result.patient.id)}
-                            className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-sky-400 hover:shadow-md transition-all group"
+                            className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 cursor-pointer hover:border-sky-400 hover:shadow-md transition-all group"
                           >
                             <div className="flex items-center gap-4">
                               <div className="h-12 w-12 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center text-lg font-bold font-outfit group-hover:bg-sky-100 transition-colors">
@@ -493,7 +493,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                         )}
                       </div>
 
-                      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                      <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                         {/* Patient Info Header */}
                         <div className="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <div className="flex items-center gap-4">
@@ -596,7 +596,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                               ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                   {result.prescriptions.map(presc => (
-                                    <div key={presc.id} className="border border-gray-200 rounded-xl p-4 hover:border-sky-300 hover:shadow-md transition-all group">
+                                    <div key={presc.id} className="border border-gray-200 rounded-3xl p-4 hover:border-sky-300 hover:shadow-md transition-all group">
                                       <div className="flex justify-between items-start mb-2">
                                         <span className="bg-sky-50 text-sky-700 text-xs font-bold px-2 py-1 rounded">{presc.date}</span>
                                         <span className="text-gray-400 text-xs font-mono">{presc.prescription_id}</span>
@@ -634,7 +634,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
 
               {searchResults === null && !isLoading && (
                 /* Token Management Card */
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
+                <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col h-[calc(100vh-10rem)] sticky top-24">
                   <div className="flex justify-between items-center mb-4">
                     <h3 className="text-xl font-bold text-gray-900 font-outfit">Live Queue</h3>
                     <button onClick={fetchQueue} className="text-sky-600 hover:text-sky-800">
@@ -644,7 +644,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
 
                   <div className="flex-1 overflow-y-auto pr-2 space-y-3">
                     {queueError && (
-                      <div className="p-3 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 mb-3">
+                      <div className="p-3 bg-red-50 text-red-700 rounded-3xl text-sm border border-red-200 mb-3">
                         {queueError}
                       </div>
                     )}
@@ -655,11 +655,11 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                         <div 
                           key={q.token_id} 
                           onClick={() => handleLookupById(q.patient_id)}
-                          className={`p-4 rounded-xl border cursor-pointer hover:shadow-md hover:border-sky-300 transition-all ${q.status === 'SERVING' ? 'bg-sky-50 border-sky-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
+                          className={`p-4 rounded-3xl border cursor-pointer hover:shadow-md hover:border-sky-300 transition-all ${q.status === 'SERVING' ? 'bg-sky-50 border-sky-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
                         >
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
-                              <div className={`flex items-center justify-center w-12 h-12 rounded-lg font-bold text-xl mr-4 ${q.status === 'SERVING' ? 'bg-sky-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                              <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-xl mr-4 ${q.status === 'SERVING' ? 'bg-sky-600 text-white' : 'bg-gray-100 text-gray-600'}`}>
                                 #{q.token_number}
                               </div>
                               <div>
@@ -673,7 +673,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                               <div className="flex gap-2">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'SERVING'); }}
-                                  className="px-3 py-1.5 text-sm bg-sky-100 text-sky-700 font-medium rounded-lg hover:bg-sky-200 transition-colors"
+                                  className="px-3 py-1.5 text-sm bg-sky-100 text-sky-700 font-medium rounded-3xl hover:bg-sky-200 transition-colors"
                                   title="Mark as Serving"
                                 >
                                   Serve
@@ -683,7 +683,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                                 {idx < displayQueue.length - 1 && displayQueue[idx + 1].status === 'CHECKED_IN' && (
                                   <button
                                     onClick={(e) => { e.stopPropagation(); handleMoveQueue(q.token_id, displayQueue[idx + 1].token_id); }}
-                                    className="p-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                    className="p-1.5 text-sm bg-gray-100 text-gray-700 rounded-3xl hover:bg-gray-200 transition-colors flex items-center justify-center"
                                     title="Patient hasn't arrived, move down"
                                   >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
@@ -695,7 +695,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                             {q.status === 'SERVING' && (
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'COMPLETED'); }}
-                                className="px-3 py-1.5 text-sm bg-green-100 text-green-700 font-medium rounded-lg hover:bg-green-200 transition-colors"
+                                className="px-3 py-1.5 text-sm bg-green-100 text-green-700 font-medium rounded-3xl hover:bg-green-200 transition-colors"
                               >
                                 Complete
                               </button>

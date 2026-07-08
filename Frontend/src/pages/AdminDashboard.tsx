@@ -133,7 +133,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
       <div className="min-h-[70vh] bg-gray-50 pt-32 pb-12 lg:py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="bg-white p-8 rounded-lg shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="bg-white p-8 rounded-3xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 font-outfit">{isDemo ? 'Demo ' : ''}Admin Dashboard</h1>
               <p className="text-gray-600 mt-2">Welcome, <span className="font-semibold text-sky-600">{displayName}</span></p>
@@ -144,7 +144,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                   if (isDemo) alert('Demo Mode: Feature disabled.');
                   else setIsPasswordModalOpen(true);
                 }}
-                className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-md text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
+                className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-2xl text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
               >
                 Update Password
               </button>
@@ -153,7 +153,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                   if (isDemo) alert('Demo Mode: Feature disabled.');
                   else logout();
                 }}
-                className="px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors"
+                className="px-4 py-2 border border-transparent text-sm font-medium rounded-2xl text-white bg-red-600 hover:bg-red-700 transition-colors"
               >
                 Logout
               </button>
@@ -164,11 +164,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             {/* Create User Form */}
-            <div className="bg-white p-8 rounded-lg shadow-sm">
+            <div className="bg-white p-8 rounded-3xl shadow-sm">
               <h2 className="text-xl font-bold text-gray-900 mb-6 font-outfit">Create Staff User</h2>
               
               {status.message && (
-                <div className={`p-4 mb-6 rounded-md ${status.type === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700'}`}>
+                <div className={`p-4 mb-6 rounded-2xl ${status.type === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700'}`}>
                   {status.message}
                 </div>
               )}
@@ -182,7 +182,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                   />
                 </div>
                 
@@ -194,7 +194,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     required
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                   />
                 </div>
                 
@@ -207,7 +207,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                      className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                     />
                   </div>
                   <div>
@@ -218,7 +218,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                      className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                     />
                   </div>
                 </div>
@@ -229,7 +229,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     id="role"
                     value={userRole}
                     onChange={(e) => setUserRole(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border bg-white"
+                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border bg-white"
                   >
                     <option value="RECEPTIONIST">Receptionist</option>
                     <option value="DOCTOR">Doctor</option>
@@ -240,7 +240,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   {isLoading ? 'Creating...' : 'Create User'}
                 </button>
@@ -248,7 +248,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
             </div>
             
             {/* Manage Users List */}
-            <div className="bg-white p-8 rounded-lg shadow-sm overflow-hidden flex flex-col max-h-[600px]">
+            <div className="bg-white p-8 rounded-3xl shadow-sm overflow-hidden flex flex-col max-h-[600px]">
               <h2 className="text-xl font-bold text-gray-900 mb-6 font-outfit">Manage Users</h2>
               
               {isLoadingUsers ? (
@@ -256,7 +256,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600"></div>
                 </div>
               ) : usersError ? (
-                <div className="p-4 bg-red-50 text-red-700 rounded-md border-l-4 border-red-500 mb-4">
+                <div className="p-4 bg-red-50 text-red-700 rounded-2xl border-l-4 border-red-500 mb-4">
                   {usersError}
                   <button onClick={fetchUsers} className="ml-4 underline text-red-800 hover:text-red-900">Retry</button>
                 </div>

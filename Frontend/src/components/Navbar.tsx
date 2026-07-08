@@ -72,7 +72,7 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                     isActive
                       ? 'text-sage-dark bg-mint/50'
                       : 'text-dark-soft hover:text-sage-dark hover:bg-mint/30'
@@ -90,7 +90,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-dark-soft hover:bg-mint/30 transition-all duration-200 whitespace-nowrap flex-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-3xl text-sm font-medium text-dark-soft hover:bg-mint/30 transition-all duration-200 whitespace-nowrap flex-nowrap"
                 aria-label="Select language"
               >
                 <Globe className="w-4 h-4 shrink-0" />
@@ -101,7 +101,7 @@ export default function Navbar() {
               {langOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setLangOpen(false)} />
-                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-elevated border border-mint/50 overflow-hidden z-50 animate-scale-in">
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-3xl shadow-elevated border border-mint/50 overflow-hidden z-50 animate-scale-in">
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
@@ -133,7 +133,7 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-mint/30 transition-colors duration-200"
+              className="lg:hidden p-2 rounded-3xl hover:bg-mint/30 transition-colors duration-200"
               aria-label="Toggle menu"
             >
               {mobileOpen ? (
@@ -161,7 +161,7 @@ export default function Navbar() {
                   key={link.to}
                   to={link.to}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  className={`block px-4 py-2.5 rounded-3xl text-sm font-medium transition-all duration-200 ${
                     isActive
                       ? 'text-sage-dark bg-mint/40'
                       : 'text-dark-soft hover:text-sage-dark hover:bg-mint/20'

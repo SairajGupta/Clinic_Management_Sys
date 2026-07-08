@@ -426,7 +426,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 100%;
   padding: 0.85rem 1.25rem;
   border: 2px solid var(--color-mint);
-  border-radius: 12px;
+  border-radius: 9999px;
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--color-dark);

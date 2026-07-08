@@ -31,7 +31,7 @@ export default function WhatsAppWidget() {
       </a>
 
       {/* Tooltip */}
-      <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-dark text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+      <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-dark text-white text-xs font-medium rounded-3xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
         {t('whatsapp.tooltip')}
         <div className="absolute top-full right-4 border-4 border-transparent border-t-dark" />
       </div>

@@ -124,7 +124,7 @@ export default function Prescription() {
             </div>
 
             {/* Search Box */}
-            <div className={`bg-white rounded-xl p-6 sm:p-8 shadow-card border border-mint/20 mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
+            <div className={`bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-mint/20 mb-8 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '200ms' }}>
               <p className="text-sm text-warm-gray mb-5 text-center">{t('prescription.info')}</p>
 
               <div className="flex flex-col sm:flex-row gap-3">
@@ -166,7 +166,7 @@ export default function Prescription() {
               </div>
 
               {error && (
-                <div className="mt-4 flex items-center gap-2 text-red-500 bg-red-50 rounded-xl px-4 py-3">
+                <div className="mt-4 flex items-center gap-2 text-red-500 bg-red-50 rounded-3xl px-4 py-3">
                   <AlertCircle className="w-5 h-5 flex-shrink-0" />
                   <p className="text-sm">{error}</p>
                 </div>
@@ -175,7 +175,7 @@ export default function Prescription() {
 
             {/* Prescription Result */}
             {result && (
-              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-card border border-mint/20 animate-scale-in print:shadow-none print:border-none print-area">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-card border border-mint/20 animate-scale-in print:shadow-none print:border-none print-area">
                 {/* Header */}
                 <div className="text-center pb-6 border-b border-mint/20 mb-6">
                   <h2 className="text-xl font-extrabold text-dark">{t('hero.clinicName')}</h2>
@@ -207,7 +207,7 @@ export default function Prescription() {
                     <Pill className="w-5 h-5 text-sage-dark" />
                     <h3 className="text-base font-bold text-dark">{t('prescription.medications')}</h3>
                   </div>
-                  <div className="bg-offwhite rounded-xl overflow-hidden">
+                  <div className="bg-offwhite rounded-3xl overflow-hidden">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="bg-mint/30">
@@ -230,7 +230,7 @@ export default function Prescription() {
                 </div>
 
                 {/* Notes */}
-                <div className="bg-beige/50 rounded-xl p-4 mb-6">
+                <div className="bg-beige/50 rounded-3xl p-4 mb-6">
                   <p className="text-xs font-semibold text-dark mb-1">{t('prescription.notes')}</p>
                   <p className="text-sm text-warm-gray">{result.notes}</p>
                 </div>
@@ -250,7 +250,7 @@ export default function Prescription() {
             )}
 
             {/* Help Section */}
-            <div className={`mt-8 bg-sky/5 rounded-lg p-6 border border-sky/15 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
+            <div className={`mt-8 bg-sky/5 rounded-3xl p-6 border border-sky/15 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '400ms' }}>
               <div className="flex items-start gap-3">
                 <HelpCircle className="w-5 h-5 text-sky-dark flex-shrink-0 mt-0.5" />
                 <div>

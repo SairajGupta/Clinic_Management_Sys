@@ -91,13 +91,13 @@ const UpdatePasswordModal: React.FC<UpdatePasswordModalProps> = ({ isOpen, onClo
         <p className="text-gray-500 mb-6 text-sm">Create a new, strong password for your account.</p>
         
         {error && (
-          <div className="p-3 mb-4 rounded-md bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
+          <div className="p-3 mb-4 rounded-2xl bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
             {error}
           </div>
         )}
         
         {success && (
-          <div className="p-3 mb-4 rounded-md bg-green-50 border-l-4 border-green-500 text-green-700 text-sm flex items-center">
+          <div className="p-3 mb-4 rounded-2xl bg-green-50 border-l-4 border-green-500 text-green-700 text-sm flex items-center">
             <CheckCircle className="w-4 h-4 mr-2" />
             {success}
           </div>
@@ -111,7 +111,7 @@ const UpdatePasswordModal: React.FC<UpdatePasswordModalProps> = ({ isOpen, onClo
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+              className="block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -123,7 +123,7 @@ const UpdatePasswordModal: React.FC<UpdatePasswordModalProps> = ({ isOpen, onClo
               required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+              className="block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -132,7 +132,7 @@ const UpdatePasswordModal: React.FC<UpdatePasswordModalProps> = ({ isOpen, onClo
             <button
               type="submit"
               disabled={isLoading || success !== ''}
-              className={`w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading || success !== '' ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full flex justify-center py-2.5 px-4 border border-transparent rounded-3xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading || success !== '' ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {isLoading ? 'Updating...' : 'Update Password'}
             </button>
