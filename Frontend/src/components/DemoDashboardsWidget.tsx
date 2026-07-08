@@ -6,7 +6,7 @@ export default function DemoDashboardsWidget() {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
-    <div className="fixed top-24 right-4 z-40">
+    <div className="fixed top-32 right-4 z-40">
       <div className="relative">
         <button
           onClick={() => setDemoOpen(!demoOpen)}
