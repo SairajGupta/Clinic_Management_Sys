@@ -19,8 +19,8 @@ import models
 import auth
 from database import engine, get_db
 
-# Create database tables based on models
-models.Base.metadata.create_all(bind=engine)
+# Database tables are now managed by Alembic migrations
+# models.Base.metadata.create_all(bind=engine)
 
 limiter = Limiter(key_func=get_remote_address)
 
