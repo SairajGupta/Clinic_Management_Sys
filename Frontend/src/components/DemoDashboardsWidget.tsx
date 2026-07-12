@@ -26,7 +26,7 @@ export default function DemoDashboardsWidget() {
         {demoOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setDemoOpen(false)} />
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-3xl shadow-elevated border border-indigo-100 overflow-hidden z-50 animate-scale-in">
+            <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-elevated border border-indigo-100 overflow-hidden z-50 animate-scale-in">
               <Link
                 to="/demo/doctor"
                 onClick={() => setDemoOpen(false)}

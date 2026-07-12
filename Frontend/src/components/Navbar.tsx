@@ -101,7 +101,7 @@ export default function Navbar() {
               {langOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setLangOpen(false)} />
-                  <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-44 bg-white rounded-3xl shadow-elevated border border-mint/50 overflow-hidden z-50 animate-scale-in">
+                  <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-44 bg-white rounded-lg shadow-elevated border border-mint/50 overflow-hidden z-50 animate-scale-in">
                     {languages.map((lang) => (
                       <button
                         key={lang.code}

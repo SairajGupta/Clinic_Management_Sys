@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { Helmet } from 'react-helmet-async';
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
 import EditUserModal from '../components/EditUserModal';
@@ -10,6 +11,7 @@ interface AdminDashboardProps {
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
   const { role, name, token, logout } = useAuth();
+  const { showToast } = useToast();
   
   const displayName = isDemo ? 'Demo Admin' : (name || role);
   
@@ -141,19 +143,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
             <div className="flex gap-3">
               <button
                 onClick={() => {
-                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else setIsPasswordModalOpen(true);
                 }}
-                className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-2xl text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
+                className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-lg text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
               >
                 Update Password
               </button>
               <button
                 onClick={() => {
-                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else logout();
                 }}
-                className="px-4 py-2 border border-transparent text-sm font-medium rounded-2xl text-white bg-red-600 hover:bg-red-700 transition-colors"
+                className="px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition-colors"
               >
                 Logout
               </button>
@@ -168,7 +170,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
               <h2 className="text-xl font-bold text-gray-900 mb-6 font-outfit">Create Staff User</h2>
               
               {status.message && (
-                <div className={`p-4 mb-6 rounded-2xl ${status.type === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700'}`}>
+                <div className={`p-4 mb-6 rounded-lg ${status.type === 'success' ? 'bg-green-50 border-l-4 border-green-500 text-green-700' : 'bg-red-50 border-l-4 border-red-500 text-red-700'}`}>
                   {status.message}
                 </div>
               )}
@@ -182,7 +184,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                    className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                   />
                 </div>
                 
@@ -194,7 +196,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     required
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                    className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                   />
                 </div>
                 
@@ -207,7 +209,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                      className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                     />
                   </div>
                   <div>
@@ -218,7 +220,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
+                      className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border outline-none"
                     />
                   </div>
                 </div>
@@ -229,7 +231,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                     id="role"
                     value={userRole}
                     onChange={(e) => setUserRole(e.target.value)}
-                    className="mt-1 block w-full border-gray-300 rounded-2xl shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border bg-white"
+                    className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm px-4 py-2 border bg-white"
                   >
                     <option value="RECEPTIONIST">Receptionist</option>
                     <option value="DOCTOR">Doctor</option>
@@ -240,7 +242,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
                   {isLoading ? 'Creating...' : 'Create User'}
                 </button>
@@ -286,7 +288,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                                <button 
                                  onClick={() => {
                                    if (isDemo) {
-                                     alert('Demo Mode: User editing is disabled.');
+                                     showToast('Demo Mode: User editing is disabled.', 'info');
                                    } else {
                                      setSelectedUserForEdit(user); 
                                      setIsEditUserModalOpen(true); 

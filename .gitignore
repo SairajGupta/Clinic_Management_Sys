@@ -37,7 +37,7 @@ build/
 # IDEs
 .vscode/
 .idea/
-.md
+
 # Database files
 *.db
 *.sqlite

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { Helmet } from 'react-helmet-async';
 
 import UpdatePasswordModal from '../components/UpdatePasswordModal';
@@ -52,6 +53,7 @@ interface ReceptionistDashboardProps {
 
 const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = false }) => {
   const { name, role, token, logout } = useAuth();
+  const { showToast } = useToast();
   
   const displayName = isDemo ? 'Demo Receptionist' : (name || role);
   
@@ -182,7 +184,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
 
   const handleCheckIn = async (appointmentId: number) => {
     if (isDemo) {
-      alert("Demo Mode: Patient checked in!");
+      showToast("Demo Mode: Patient checked in!", 'success');
       fetchQueue();
       return;
     }
@@ -198,23 +200,23 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
       });
       const data = await response.json();
       if (response.ok) {
-        alert(data.message);
+        showToast(data.message, 'success');
         fetchQueue();
         if (phoneSearch) {
           // Trigger search refresh implicitly
           handleSearch({ preventDefault: () => { } } as any);
         }
       } else {
-        alert(data.detail);
+        showToast(data.detail, 'error');
       }
     } catch (err) {
-      alert('Error checking in patient.');
+      showToast('Error checking in patient.', 'error');
     }
   };
 
   const handleMoveQueue = async (tokenId: number, afterTokenId: number) => {
     if (isDemo) {
-      alert("Demo Mode: Moved patient in queue.");
+      showToast("Demo Mode: Moved patient in queue.", 'info');
       fetchQueue();
       return;
     }
@@ -232,7 +234,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
         fetchQueue();
       }
     } catch (err) {
-      alert('Error moving token.');
+      showToast('Error moving token.', 'error');
     }
   };
 
@@ -255,7 +257,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
         fetchQueue();
       }
     } catch (err) {
-      alert('Error updating status.');
+      showToast('Error updating status.', 'error');
     }
   };
 
@@ -341,7 +343,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
             <div className="flex gap-3">
               <button
                 onClick={() => {
-                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else setIsPasswordModalOpen(true);
                 }}
                 className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-full text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm whitespace-nowrap"
@@ -350,7 +352,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
               </button>
               <button
                 onClick={() => {
-                  if (isDemo) alert('Demo Mode: Feature disabled.');
+                  if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else logout();
                 }}
                 className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
@@ -415,7 +417,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                   onClick={(e) => {
                     if (isDemo) {
                       e.preventDefault();
-                      alert('Demo Mode: Walk-in booking is simulated in search results.');
+                      showToast('Demo Mode: Walk-in booking is simulated in search results.', 'info');
                     } else {
                       window.location.href = "/appointment"; // Fallback if Link not used easily
                     }
@@ -608,7 +610,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                                         onClick={(e) => {
                                           if (isDemo) {
                                             e.preventDefault();
-                                            alert('Demo Mode: View PDF disabled.');
+                                            showToast('Demo Mode: View PDF disabled.', 'info');
                                           } else {
                                             window.open(`/prescription?id=${presc.prescription_id}`, '_blank');
                                           }
@@ -655,7 +657,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                         <div 
                           key={q.token_id} 
                           onClick={() => handleLookupById(q.patient_id)}
-                          className={`p-4 rounded-3xl border cursor-pointer hover:shadow-md hover:border-sky-300 transition-all ${q.status === 'SERVING' ? 'bg-sky-50 border-sky-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
+                          className={`p-4 rounded-xl border cursor-pointer hover:shadow-md hover:border-sky-300 transition-all ${q.status === 'SERVING' ? 'bg-sky-50 border-sky-200 shadow-sm' : q.status === 'CHECKED_IN' ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-100 opacity-60'}`}
                         >
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
@@ -673,7 +675,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                               <div className="flex gap-2">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'SERVING'); }}
-                                  className="px-3 py-1.5 text-sm bg-sky-100 text-sky-700 font-medium rounded-3xl hover:bg-sky-200 transition-colors"
+                                  className="px-3 py-1.5 text-sm bg-sky-100 text-sky-700 font-medium rounded-xl hover:bg-sky-200 transition-colors"
                                   title="Mark as Serving"
                                 >
                                   Serve
@@ -683,7 +685,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                                 {idx < displayQueue.length - 1 && displayQueue[idx + 1].status === 'CHECKED_IN' && (
                                   <button
                                     onClick={(e) => { e.stopPropagation(); handleMoveQueue(q.token_id, displayQueue[idx + 1].token_id); }}
-                                    className="p-1.5 text-sm bg-gray-100 text-gray-700 rounded-3xl hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                    className="p-1.5 text-sm bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center"
                                     title="Patient hasn't arrived, move down"
                                   >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
@@ -695,7 +697,7 @@ const ReceptionistDashboard: React.FC<ReceptionistDashboardProps> = ({ isDemo = 
                             {q.status === 'SERVING' && (
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleUpdateStatus(q.token_id, 'COMPLETED'); }}
-                                className="px-3 py-1.5 text-sm bg-green-100 text-green-700 font-medium rounded-3xl hover:bg-green-200 transition-colors"
+                                className="px-3 py-1.5 text-sm bg-green-100 text-green-700 font-medium rounded-xl hover:bg-green-200 transition-colors"
                               >
                                 Complete
                               </button>
