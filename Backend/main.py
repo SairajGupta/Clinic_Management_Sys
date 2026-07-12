@@ -128,7 +128,9 @@ def login_for_access_token(request: Request, form_data: OAuth2PasswordRequestFor
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Avoid exposing raw database connection errors or technical details
+        print(f"Login error: {str(e)}")
+        raise HTTPException(status_code=503, detail="Unable to connect to the server. Please try again later.")
 
 class UserCreateRequest(BaseModel):
     username: str
