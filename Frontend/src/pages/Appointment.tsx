@@ -403,13 +403,21 @@ export default function Appointment() {
                     <RefreshCw className="w-4 h-4" />
                     {t('appointment.bookAnother')}
                   </button>
-                  {location.state?.fromDashboard && (
+                  {(role === 'RECEPTIONIST' || role === 'ADMIN') ? (
                     <button 
                       onClick={() => navigate('/receptionist')} 
                       className="px-6 py-3 rounded-full font-bold text-sage-dark border-2 border-mint bg-white hover:bg-mint-light transition-all flex items-center justify-center gap-2"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       Back to Dashboard
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => navigate('/')} 
+                      className="px-6 py-3 rounded-full font-bold text-sage-dark border-2 border-mint bg-white hover:bg-mint-light transition-all flex items-center justify-center gap-2"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Back to Home
                     </button>
                   )}
                 </div>
@@ -447,11 +455,11 @@ export default function Appointment() {
                     
                     <div className="mt-10 flex justify-center border-t border-gray-100 pt-6">
                       <button 
-                        onClick={() => navigate(location.state?.fromDashboard ? '/receptionist' : '/')}
+                        onClick={() => navigate((role === 'RECEPTIONIST' || role === 'ADMIN') ? '/receptionist' : '/')}
                         className="flex items-center text-sage font-medium hover:text-sage-dark transition-colors"
                       >
                         <ArrowLeft className="w-4 h-4 mr-2" />
-                        {location.state?.fromDashboard ? 'Back to Dashboard' : 'Back to Home'}
+                        {(role === 'RECEPTIONIST' || role === 'ADMIN') ? 'Back to Dashboard' : 'Back to Home'}
                       </button>
                     </div>
                   </div>

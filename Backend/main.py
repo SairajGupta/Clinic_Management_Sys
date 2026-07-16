@@ -77,6 +77,7 @@ class AppointmentResponse(BaseModel):
     success: bool
     message: str
     appointment_id: str
+    token_number: Optional[int] = None
 
 
 class PrescriptionResponse(BaseModel):
@@ -272,7 +273,7 @@ def create_appointment(request: Request, appointment: AppointmentRequest, db: Se
         import hashlib
         import time as time_module
         from datetime import datetime
-        
+
         # Generate a simple appointment ID
         raw = f"{appointment.name}{appointment.phone}{time_module.time()}"
         appointment_id = "APT-" + hashlib.md5(raw.encode()).hexdigest()[:8].upper()
@@ -284,7 +285,6 @@ def create_appointment(request: Request, appointment: AppointmentRequest, db: Se
             raise HTTPException(status_code=400, detail="Invalid date format. Expected DD/MM/YYYY")
 
         try:
-            # preferred_time is like "9:00 AM - 10:00 AM" or just "9:00 AM"
             start_time_str = appointment.preferred_time.split(" - ")[0]
             scheduled_time = datetime.strptime(start_time_str, "%I:%M %p").time()
         except Exception:
@@ -298,25 +298,83 @@ def create_appointment(request: Request, appointment: AppointmentRequest, db: Se
         if scheduled_date == today and scheduled_time.hour < now_time.hour:
             raise HTTPException(status_code=400, detail="Cannot book appointments for past times today.")
 
+        # Find or create patient
+        patient = db.query(models.Patient).filter(models.Patient.phone == appointment.phone).first()
+        if not patient:
+            # Parse dob
+            try:
+                dob = datetime.strptime(appointment.dob, "%d/%m/%Y").date()
+            except ValueError:
+                dob = None
+
+            # Split name into first and last
+            name_parts = appointment.name.strip().split(" ", 1)
+            first_name = name_parts[0]
+            last_name = name_parts[1] if len(name_parts) > 1 else ""
+
+            patient = models.Patient(
+                first_name=first_name,
+                last_name=last_name,
+                phone=appointment.phone,
+                dob=dob,
+                gender=appointment.gender,
+                email=appointment.email
+            )
+            db.add(patient)
+            db.flush()
+
+        # Create Appointment
+        new_appointment = models.Appointment(
+            appointment_id=appointment_id,
+            patient_id=patient.id,
+            scheduled_date=scheduled_date,
+            scheduled_time=scheduled_time,
+            is_walk_in=True, # Assuming walk-ins for now based on the button, but could be False if from elsewhere
+            status="BOOKED",
+            reason=appointment.reason
+        )
+        db.add(new_appointment)
+        db.flush()
+
         message = f"Appointment booked successfully for {appointment.name} on {appointment.preferred_date} at {appointment.preferred_time}."
         
-        # Demo Mode: Token check-in simulation
+        # Token check-in simulation
+        token_num = None
         if scheduled_date == today:
             appt_datetime = datetime.combine(today, scheduled_time)
             now_datetime = datetime.now()
             time_diff = appt_datetime - now_datetime
             
             if time_diff.total_seconds() <= 1800: # 30 mins
-                message = f"Appointment booked and checked in! Token #DEMO generated."
+                new_appointment.status = "CHECKED_IN"
+                max_token = db.query(func.max(models.QueueToken.token_number)).filter(
+                    models.QueueToken.token_date == today
+                ).scalar() or 0
+                next_token_num = max_token + 1
+                
+                queue_token = models.QueueToken(
+                    appointment_id=new_appointment.id,
+                    token_number=next_token_num,
+                    token_date=today,
+                    sort_order=float(next_token_num),
+                    check_in_time=datetime.utcnow()
+                )
+                db.add(queue_token)
+                token_num = next_token_num
+                message = f"Appointment booked and checked in! Token #{next_token_num} generated."
+                
+        db.commit()
 
         return AppointmentResponse(
             success=True,
             message=message,
             appointment_id=appointment_id,
+            token_number=token_num
         )
     except HTTPException:
         raise
     except Exception as e:
+        db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to create appointment: {str(e)}")
 
 

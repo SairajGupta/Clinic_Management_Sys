@@ -45,3 +45,6 @@ build/
 
 # Generated files
 *.pdf
+
+# Scripts
+create_admin.py

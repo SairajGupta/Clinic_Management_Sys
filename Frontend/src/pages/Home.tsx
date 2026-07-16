@@ -24,7 +24,7 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 function Hero() {
   const { t } = useTranslation();
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-offwhite via-mint-light/30 to-offwhite">
+    <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-offwhite via-mint-light/30 to-offwhite">
       {/* Bottom Layer: SVGs and Patterns */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Organic Shapes */}
@@ -305,7 +305,7 @@ function AboutIntro() {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section className="section-padding bg-gradient-to-br from-beige/20 via-offwhite to-mint-light/20 relative overflow-hidden">
+    <section id="about" className="section-padding bg-gradient-to-br from-beige/20 via-offwhite to-mint-light/20 relative overflow-hidden">
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={ref} className={`grid lg:grid-cols-2 gap-12 items-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <div className="order-2 lg:order-1 relative">
@@ -351,7 +351,7 @@ function ServicesIntro() {
   ];
 
   return (
-    <section className="pt-16 md:pt-24 pb-8 md:pb-12 bg-offwhite relative overflow-hidden">
+    <section id="services" className="pt-16 md:pt-24 pb-8 md:pb-12 bg-offwhite relative overflow-hidden">
       <div className="organic-shape organic-shape-2 top-20 right-10 opacity-[0.05]" />
       
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -399,7 +399,7 @@ function TestimonialsPreview() {
   ];
 
   return (
-    <section className="section-padding bg-gradient-to-br from-mint-light/40 via-offwhite to-beige/30 relative overflow-hidden">
+    <section id="testimonials" className="section-padding bg-gradient-to-br from-mint-light/40 via-offwhite to-beige/30 relative overflow-hidden">
       <div className="organic-shape organic-shape-2 top-10 -right-20 opacity-[0.04]" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -469,7 +469,7 @@ function FAQPreview() {
   ];
 
   return (
-    <section className="section-padding bg-offwhite relative leaf-pattern">
+    <section id="faq" className="section-padding bg-offwhite relative leaf-pattern">
       <div className="relative z-10 max-w-3xl mx-auto">
         <div ref={ref} className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-dark mb-4">
@@ -530,7 +530,7 @@ function LocationPreview() {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section className="section-padding bg-gradient-to-br from-beige/40 via-offwhite to-mint-light/20 relative">
+    <section id="contact" className="section-padding bg-gradient-to-br from-beige/40 via-offwhite to-mint-light/20 relative">
       <div className="relative z-10 max-w-6xl mx-auto">
         <div ref={ref} className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-dark mb-4">

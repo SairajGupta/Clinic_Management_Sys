@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -15,8 +15,8 @@ const navLinks = [
   { to: '/services', labelKey: 'nav.services' },
   { to: '/testimonials', labelKey: 'nav.testimonials' },
   { to: '/faq', labelKey: 'nav.faq' },
-  { to: '/gallery', labelKey: 'nav.gallery' },
   { to: '/contact', labelKey: 'nav.contact' },
+  { to: '/gallery', labelKey: 'nav.gallery' },
   { to: '/prescription', labelKey: 'nav.prescription' },
 ];
 
@@ -32,6 +32,78 @@ export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
+  const [pillStyle, setPillStyle] = useState({ left: 0, top: 0, width: 0, height: 0, opacity: 0 });
+  const navRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  useEffect(() => {
+    // Only track scroll spy on the Home page
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: '-30% 0px -70% 0px', // Triggers when the top of the section is somewhat near the top of the viewport
+      }
+    );
+
+    const sections = ['home', 'about', 'services', 'testimonials', 'faq', 'contact'];
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) {
+          observer.unobserve(element);
+        }
+      });
+    };
+  }, [location.pathname]);
+
+  // Handle sliding pill animation calculation
+  useEffect(() => {
+    let activeIndex = -1;
+    navLinks.forEach((link, idx) => {
+      const linkId = link.to === '/' ? 'home' : link.to.replace('/', '');
+      const isPathActive = location.pathname === link.to && location.pathname !== '/';
+      const isSectionActive = location.pathname === '/' && activeSection === linkId;
+      const isHomeActiveFallback = location.pathname === '/' && link.to === '/' && !activeSection;
+      const isActive = isPathActive || isSectionActive || isHomeActiveFallback;
+      
+      if (isActive) {
+        activeIndex = idx;
+      }
+    });
+
+    if (activeIndex !== -1 && linkRefs.current[activeIndex] && navRef.current) {
+      const linkElement = linkRefs.current[activeIndex];
+      
+      setPillStyle({
+        left: linkElement!.offsetLeft,
+        top: linkElement!.offsetTop,
+        width: linkElement!.offsetWidth,
+        height: linkElement!.offsetHeight,
+        opacity: 1,
+      });
+    } else {
+      setPillStyle(prev => ({ ...prev, opacity: 0 }));
+    }
+  }, [location.pathname, activeSection, i18n.language]);
 
   const currentLang = languages.find((l) => l.code === i18n.language) || languages[0];
 
@@ -65,16 +137,34 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.to;
+          <div className="hidden lg:flex items-center gap-1 relative" ref={navRef}>
+            {/* Sliding Pill */}
+            <div
+              className="absolute bg-mint/50 rounded-3xl transition-all duration-300 ease-out pointer-events-none z-0"
+              style={{
+                left: `${pillStyle.left}px`,
+                top: `${pillStyle.top}px`,
+                width: `${pillStyle.width}px`,
+                height: `${pillStyle.height}px`,
+                opacity: pillStyle.opacity,
+              }}
+            />
+
+            {navLinks.map((link, index) => {
+              const linkId = link.to === '/' ? 'home' : link.to.replace('/', '');
+              const isPathActive = location.pathname === link.to && location.pathname !== '/';
+              const isSectionActive = location.pathname === '/' && activeSection === linkId;
+              const isHomeActiveFallback = location.pathname === '/' && link.to === '/' && !activeSection;
+              const isActive = isPathActive || isSectionActive || isHomeActiveFallback;
+
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`px-3 py-2 rounded-3xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  ref={(el) => (linkRefs.current[index] = el)}
+                  className={`relative z-10 px-3 py-2 rounded-3xl text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
                     isActive
-                      ? 'text-sage-dark bg-mint/50'
+                      ? 'text-sage-dark'
                       : 'text-dark-soft hover:text-sage-dark hover:bg-mint/30'
                   }`}
                 >
@@ -155,7 +245,12 @@ export default function Navbar() {
         <div className="px-4 pb-5 pt-2 bg-white/95 backdrop-blur-md border-t border-mint/30 max-h-[calc(100vh-4rem)] overflow-y-auto">
           <div className="space-y-1">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.to;
+              const linkId = link.to === '/' ? 'home' : link.to.replace('/', '');
+              const isPathActive = location.pathname === link.to && location.pathname !== '/';
+              const isSectionActive = location.pathname === '/' && activeSection === linkId;
+              const isHomeActiveFallback = location.pathname === '/' && link.to === '/' && !activeSection;
+              const isActive = isPathActive || isSectionActive || isHomeActiveFallback;
+
               return (
                 <Link
                   key={link.to}
