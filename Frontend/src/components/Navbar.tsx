@@ -161,7 +161,7 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  ref={(el) => (linkRefs.current[index] = el)}
+                  ref={(el) => { linkRefs.current[index] = el; }}
                   className={`relative z-10 px-3 py-2 rounded-3xl text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
                     isActive
                       ? 'text-sage-dark'

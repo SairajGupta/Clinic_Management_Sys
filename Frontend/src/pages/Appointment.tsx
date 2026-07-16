@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -130,7 +130,6 @@ const DateInput = ({ value, onChange, placeholder, required = false, min, max }:
 export default function Appointment() {
   const { t } = useTranslation();
   const { ref, isVisible } = useScrollReveal(0.05);
-  const location = useLocation();
   const navigate = useNavigate();
   const { role } = useAuth();
   
