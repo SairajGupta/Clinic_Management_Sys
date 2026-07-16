@@ -408,7 +408,7 @@ export default function Appointment() {
                       className="px-6 py-3 rounded-full font-bold text-sage-dark border-2 border-mint bg-white hover:bg-mint-light transition-all flex items-center justify-center gap-2"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      Back to Dashboard
+                      {t('appointment.backToDashboard')}
                     </button>
                   ) : (
                     <button 
@@ -416,7 +416,7 @@ export default function Appointment() {
                       className="px-6 py-3 rounded-full font-bold text-sage-dark border-2 border-mint bg-white hover:bg-mint-light transition-all flex items-center justify-center gap-2"
                     >
                       <ArrowLeft className="w-4 h-4" />
-                      Back to Home
+                      {t('appointment.backToHome')}
                     </button>
                   )}
                 </div>
@@ -432,23 +432,23 @@ export default function Appointment() {
                 
                 {step === 1 && (
                   <div className="animate-fade-in">
-                    <h3 className="text-xl font-bold text-center mb-8">Are you a new or existing patient?</h3>
+                    <h3 className="text-xl font-bold text-center mb-8">{t('appointment.typeTitle')}</h3>
                     <div className="grid sm:grid-cols-2 gap-6">
                       <button 
                         onClick={() => { setPatientType('existing'); setStep(2); }}
                         className="flex flex-col items-center p-8 rounded-3xl border-2 border-mint-light hover:border-sage bg-mint-light/10 hover:bg-mint/20 transition-all group"
                       >
                         <Users className="w-12 h-12 text-sage mb-4 group-hover:scale-110 transition-transform" />
-                        <span className="text-lg font-bold text-dark">Existing Patient</span>
-                        <span className="text-sm text-warm-gray mt-2 text-center">I have visited before</span>
+                        <span className="text-lg font-bold text-dark">{t('appointment.existingPatient')}</span>
+                        <span className="text-sm text-warm-gray mt-2 text-center">{t('appointment.existingPatientDesc')}</span>
                       </button>
                       <button 
                         onClick={() => { setPatientType('new'); setStep(2); }}
                         className="flex flex-col items-center p-8 rounded-3xl border-2 border-beige hover:border-gold/50 bg-beige/10 hover:bg-beige/30 transition-all group"
                       >
                         <UserPlus className="w-12 h-12 text-gold mb-4 group-hover:scale-110 transition-transform" />
-                        <span className="text-lg font-bold text-dark">New Patient</span>
-                        <span className="text-sm text-warm-gray mt-2 text-center">This is my first time</span>
+                        <span className="text-lg font-bold text-dark">{t('appointment.newPatient')}</span>
+                        <span className="text-sm text-warm-gray mt-2 text-center">{t('appointment.newPatientDesc')}</span>
                       </button>
                     </div>
                     
@@ -458,7 +458,7 @@ export default function Appointment() {
                         className="flex items-center text-sage font-medium hover:text-sage-dark transition-colors"
                       >
                         <ArrowLeft className="w-4 h-4 mr-2" />
-                        {(role === 'RECEPTIONIST' || role === 'ADMIN') ? 'Back to Dashboard' : 'Back to Home'}
+                        {(role === 'RECEPTIONIST' || role === 'ADMIN') ? t('appointment.backToDashboard') : t('appointment.backToHome')}
                       </button>
                     </div>
                   </div>
@@ -467,10 +467,10 @@ export default function Appointment() {
                 {step === 2 && (
                   <div className="animate-fade-in">
                     <button onClick={() => setStep(1)} className="flex items-center text-sage font-medium mb-6 hover:text-sage-dark transition-colors">
-                      <ArrowLeft className="w-4 h-4 mr-2" /> Back
+                      <ArrowLeft className="w-4 h-4 mr-2" /> {t('appointment.back')}
                     </button>
-                    <h3 className="text-xl font-bold text-center mb-2">Enter your Phone Number</h3>
-                    <p className="text-center text-warm-gray mb-8">We use this to find your records.</p>
+                    <h3 className="text-xl font-bold text-center mb-2">{t('appointment.enterPhone')}</h3>
+                    <p className="text-center text-warm-gray mb-8">{t('appointment.usePhoneDesc')}</p>
                     <form onSubmit={handlePhoneSearch} className="max-w-md mx-auto">
                       <div className="mb-6">
                         <label className="block text-sm font-semibold text-dark mb-1.5">

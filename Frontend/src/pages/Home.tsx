@@ -530,7 +530,7 @@ function LocationPreview() {
   const { ref, isVisible } = useScrollReveal();
 
   return (
-    <section id="contact" className="section-padding bg-gradient-to-br from-beige/40 via-offwhite to-mint-light/20 relative">
+    <section className="section-padding bg-gradient-to-br from-beige/40 via-offwhite to-mint-light/20 relative">
       <div className="relative z-10 max-w-6xl mx-auto">
         <div ref={ref} className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-dark mb-4">

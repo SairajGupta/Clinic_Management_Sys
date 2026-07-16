@@ -57,7 +57,7 @@ export default function Navbar() {
       }
     );
 
-    const sections = ['home', 'about', 'services', 'testimonials', 'faq', 'contact'];
+    const sections = ['home', 'about', 'services', 'testimonials', 'faq'];
     sections.forEach((id) => {
       const element = document.getElementById(id);
       if (element) {
@@ -115,6 +115,13 @@ export default function Navbar() {
     [i18n]
   );
 
+  const handleNavClick = (to: string) => {
+    if (location.pathname === to) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    setMobileOpen(false);
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
       <nav className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
@@ -123,7 +130,7 @@ export default function Navbar() {
           <Link
             to="/"
             className="flex items-center gap-2.5 group"
-            onClick={() => setMobileOpen(false)}
+            onClick={() => handleNavClick('/')}
           >
             <img src="/Home/doctor-logo-49376.png" alt="Doctor Logo" className="w-10 h-10 object-contain" />
             <div className="hidden sm:block">
@@ -161,6 +168,7 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
+                  onClick={() => handleNavClick(link.to)}
                   ref={(el) => { linkRefs.current[index] = el; }}
                   className={`relative z-10 px-3 py-2 rounded-3xl text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
                     isActive
@@ -214,6 +222,7 @@ export default function Navbar() {
             {/* CTA Button (Desktop) */}
             <Link
               to="/appointment"
+              onClick={() => handleNavClick('/appointment')}
               className="hidden lg:inline-flex btn-primary text-sm !py-2 !px-5 whitespace-nowrap"
             >
               <Calendar className="w-4 h-4" />
@@ -255,7 +264,7 @@ export default function Navbar() {
                 <Link
                   key={link.to}
                   to={link.to}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={() => handleNavClick(link.to)}
                   className={`block px-4 py-2.5 rounded-3xl text-sm font-medium transition-all duration-200 ${
                     isActive
                       ? 'text-sage-dark bg-mint/40'
@@ -271,7 +280,7 @@ export default function Navbar() {
           <div className="mt-4 pt-4 border-t border-mint/30">
             <Link
               to="/appointment"
-              onClick={() => setMobileOpen(false)}
+              onClick={() => handleNavClick('/appointment')}
               className="btn-primary w-full justify-center text-sm whitespace-nowrap"
             >
               <Calendar className="w-4 h-4" />

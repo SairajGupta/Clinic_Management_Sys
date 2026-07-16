@@ -146,7 +146,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                   if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else setIsPasswordModalOpen(true);
                 }}
-                className="px-4 py-2 border border-sky-600 text-sm font-medium rounded-lg text-sky-600 bg-transparent hover:bg-sky-50 transition-colors"
+                className="px-5 py-2.5 border border-sky-600 text-sm font-medium rounded-full text-sky-600 bg-transparent hover:bg-sky-50 transition-colors shadow-sm whitespace-nowrap"
               >
                 Update Password
               </button>
@@ -155,7 +155,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                   if (isDemo) showToast('Demo Mode: Feature disabled.', 'info');
                   else logout();
                 }}
-                className="px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition-colors"
+                className="px-5 py-2.5 border border-transparent text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 transition-colors shadow-sm"
               >
                 Logout
               </button>
@@ -242,7 +242,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ isDemo = false }) => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-colors ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-3xl shadow-sm text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-md'}`}
                 >
                   {isLoading ? 'Creating...' : 'Create User'}
                 </button>

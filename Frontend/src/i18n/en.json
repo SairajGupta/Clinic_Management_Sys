@@ -170,7 +170,17 @@
     "submitting": "Booking...",
     "successTitle": "Appointment Booked!",
     "successMessage": "Your appointment has been successfully scheduled. We will contact you shortly to confirm.",
-    "bookAnother": "Book Another Appointment"
+    "bookAnother": "Book Another Appointment",
+    "typeTitle": "Are you a new or existing patient?",
+    "existingPatient": "Existing Patient",
+    "existingPatientDesc": "I have visited before",
+    "newPatient": "New Patient",
+    "newPatientDesc": "This is my first time",
+    "backToHome": "Back to Home",
+    "backToDashboard": "Back to Dashboard",
+    "back": "Back",
+    "enterPhone": "Enter your Phone Number",
+    "usePhoneDesc": "We use this to find your records."
   },
   "testimonialsPage": {
     "title": "Patient Testimonials",
